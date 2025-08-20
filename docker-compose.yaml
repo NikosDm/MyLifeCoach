@@ -1,0 +1,68 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    restart: "unless-stopped"
+    environment:
+      POSTGRES_USER: postgres_user
+      POSTGRES_PASSWORD: postgres1234
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-d", "postgres"]
+      interval: 20s
+      timeout: 60s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4:latest
+    restart: "unless-stopped"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: niktom@thom.com
+      PGADMIN_DEFAULT_PASSWORD: niktom
+      PGADMIN_LISTEN_PORT: 5050
+    ports:
+      - "5050:5050"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  goals-api:
+    container_name: goals-api
+    image: nikosdmthom/mylifecoach/goals-api:latest
+    restart: "unless-stopped"
+    build:
+      context: .
+      dockerfile: src/Apis/goals-api/Goals.Api/Dockerfile
+    environment:
+      - ASPNETCORE_HTTP_PORTS=3000
+    ports:
+      - "3000:3000"
+      - "3300:3300"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  identity-server:
+    container_name: identity-server
+    image: nikosdmthom/mylifecoach/identity-server:latest
+    restart: "unless-stopped"
+    build:
+      context: .
+      dockerfile: src/Apis/identity-server/identityServer/Dockerfile
+    environment:
+      - ASPNETCORE_HTTP_PORTS=3010
+    ports:
+      - "3010:3010"
+      - "3310:3310"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
