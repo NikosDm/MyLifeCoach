@@ -37,7 +37,6 @@ internal sealed class GoalConfiguration : IEntityTypeConfiguration<Goal>
             t.HasCheckConstraint("CK_GoalStep_Progress_Range", "\"Progress\" BETWEEN 0 AND 100");
         });
 
-        // Enums stored as ints by default; keep it simple
         builder.Property(e => e.Status)
               .HasConversion<int>()
               .IsRequired();

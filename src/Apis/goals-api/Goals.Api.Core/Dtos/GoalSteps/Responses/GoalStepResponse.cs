@@ -1,4 +1,5 @@
 using System;
+using Goals.Api.Domain.Enums;
 
 namespace Goals.Api.Core.Dtos.GoalSteps.Responses;
 
@@ -9,6 +10,6 @@ public record GoalStepResponse
     public string Description { get; init; }
     public int Order { get; init; }
     public double Progress { get; init; }
-    public bool IsActive { get; init; }
+    public GoalStepStatus Status { get; set; }
     public DateTimeOffset? DueDate { get; init; }
 }

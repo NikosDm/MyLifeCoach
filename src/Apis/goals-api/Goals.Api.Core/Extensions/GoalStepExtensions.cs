@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Goals.Api.Core.Dtos.GoalSteps.Requests;
 using Goals.Api.Core.Dtos.GoalSteps.Responses;
 using Goals.Api.Domain.Entities;
+using Goals.Api.Domain.Enums;
 
 namespace Goals.Api.Core.Extensions;
 
@@ -19,7 +19,7 @@ public static class GoalStepExtensions
             Description = source.Description,
             DueDate = source.DueDate,
             Order = source.Order,
-            IsActive = source.IsActive,
+            Status = source.Status,
             Progress = source.Progress
         };
 
@@ -34,7 +34,7 @@ public static class GoalStepExtensions
             Description = source.Description,
             Order = source.Order,
             DueDate = source.DueDate,
-            IsActive = true,
+            Status = GoalStepStatus.NotStarted,
             Progress = 0,
             GoalId = source.GoalId
         };
@@ -51,7 +51,7 @@ public static class GoalStepExtensions
             Description = source.Description,
             Order = source.Order,
             DueDate = source.DueDate,
-            IsActive = true,
+            Status = GoalStepStatus.NotStarted,
             Progress = 0
         };
 
@@ -67,7 +67,7 @@ public static class GoalStepExtensions
             Description = source.Description,
             Order = source.Order,
             DueDate = source.DueDate,
-            IsActive = source.IsActive,
+            Status = source.Status,
             Progress = source.Progress
         };
 }

@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Goals.Api.DataPersistence.Migrations
 {
     [DbContext(typeof(GoalsDbContext))]
-    [Migration("20250818010239_InitialCreate")]
+    [Migration("20250821000229_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -97,9 +97,6 @@ namespace Goals.Api.DataPersistence.Migrations
                     b.Property<Guid>("GoalId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("boolean");
-
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -116,6 +113,9 @@ namespace Goals.Api.DataPersistence.Migrations
 
                     b.Property<double>("Progress")
                         .HasColumnType("double precision");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 

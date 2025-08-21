@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using Goals.Api.Domain.Enums;
+using Libraries.Common.Abstractions;
 using Libraries.Common.Entities;
 
 namespace Goals.Api.Domain.Entities;
 
-public class Goal : BaseEntity
+public class Goal : BaseEntity, IPeriod
 {
     public string Name { get; set; }
     public string Description { get; set; }

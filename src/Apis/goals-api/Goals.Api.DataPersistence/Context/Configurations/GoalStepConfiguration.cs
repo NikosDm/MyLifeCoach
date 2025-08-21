@@ -31,6 +31,10 @@ internal sealed class GoalStepConfiguration : IEntityTypeConfiguration<GoalStep>
         builder.Property(e => e.DueDate)
               .IsRequired(false);
 
+        builder.Property(e => e.Status)
+              .HasConversion<int>()
+              .IsRequired();
+              
         builder.HasOne(e => e.Goal)
               .WithMany(g => g.Steps)
               .HasForeignKey(e => e.GoalId)

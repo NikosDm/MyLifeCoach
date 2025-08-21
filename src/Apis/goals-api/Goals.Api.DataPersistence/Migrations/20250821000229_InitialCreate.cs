@@ -68,7 +68,7 @@ namespace Goals.Api.DataPersistence.Migrations
                     Description = table.Column<string>(type: "text", nullable: true),
                     Order = table.Column<int>(type: "integer", nullable: false),
                     Progress = table.Column<double>(type: "double precision", nullable: false),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
                     DueDate = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uuid", nullable: false),
                     LastUpdatedBy = table.Column<Guid>(type: "uuid", nullable: false),

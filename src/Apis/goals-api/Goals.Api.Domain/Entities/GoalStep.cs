@@ -1,4 +1,5 @@
 using System;
+using Goals.Api.Domain.Enums;
 using Libraries.Common.Entities;
 
 namespace Goals.Api.Domain.Entities;
@@ -10,7 +11,7 @@ public class GoalStep : BaseEntity
     public string Description { get; set; }
     public int Order { get; set; }
     public double Progress { get; set; }
-    public bool IsActive { get; set; }
+    public GoalStepStatus Status { get; set; }
     public DateTimeOffset? DueDate { get; set; }
 
     public Goal Goal { get; set; }
