@@ -13,4 +13,4 @@ namespace Goals.Api.Core.Dtos.GoalSteps.Requests;
 /// <param name="Order">Order of the step (Integer - should not be negative)</param>
 /// <param name="DueDate">Due date of step (Optional)</param>
 /// <param name="IsActive">Determining whether step is active or not (true or false)</param>
-public record UpdateGoalStepRequest(Guid GoalId, string Name, string Description, int Order, double Progress, DateTimeOffset? DueDate, GoalStepStatus Status);
+public sealed record UpdateGoalStepRequest(Guid GoalId, string Name, string Description, int Order, double Progress, DateTimeOffset? DueDate, GoalStepStatus Status);

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalSteps.Handlers.Commands;
 
-public sealed class DeleteGoalStepCommandHandler(
+internal sealed class DeleteGoalStepCommandHandler(
     ILogger<BaseCommandHandler<DeleteGoalStepCommand, Guid>> logger,
     IGoalStepRepository goalStepRepository)
     : BaseCommandHandler<DeleteGoalStepCommand, Guid>(logger), ICommandHandler<DeleteGoalStepCommand, Guid>
@@ -29,6 +29,9 @@ public sealed class DeleteGoalStepCommandHandler(
 
         if (goalStep.Status == GoalStepStatus.Deleted) throw new BadRequestException("Goal step is already deleted");
 
+        // TODO In case the status changes on one Goal Step 
+        // send domain event which could be handled after Goal Step is 
+        // updated on the database. For the moment this is not handled.
         goalStep.SetStatus(GoalStepStatus.Deleted);
         var result = await _goalStepRepository.UpdateAsync(goalStep, token);
 

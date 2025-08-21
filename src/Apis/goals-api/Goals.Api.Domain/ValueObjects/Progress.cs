@@ -3,7 +3,7 @@ using Libraries.Common.Exceptions;
 
 namespace Goals.Api.Domain.ValueObjects;
 
-public class Progress
+public sealed class Progress
 {
     public double Value { get; }
 

@@ -55,8 +55,6 @@ public class GoalStep : BaseEntity
         SetStatus(status);
     }
 
-    // TODO In case the status changes on one Goal Step 
-    // send event. 
     public void SetStatus(GoalStepStatus status)
     {
         Status = status;

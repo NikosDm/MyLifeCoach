@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServer.Services;
 
-public class UserProfileService(UserManager<ApplicationUser> userManager) 
+public sealed class UserProfileService(UserManager<ApplicationUser> userManager) 
     : IProfileService
 {
     private readonly UserManager<ApplicationUser> _userManager = userManager

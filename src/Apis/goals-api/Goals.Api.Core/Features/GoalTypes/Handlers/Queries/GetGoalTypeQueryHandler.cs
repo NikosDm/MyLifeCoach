@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalTypes.Handlers.Queries;
 
-public sealed class GetGoalTypeQueryHandler(
+internal sealed class GetGoalTypeQueryHandler(
     IGoalTypeRepository goalTypeRepository,
     ILogger<GetGoalTypeQueryHandler> logger) 
     : BaseQueryHandler<GetGoalTypeQuery, GoalTypeResponse>(logger),

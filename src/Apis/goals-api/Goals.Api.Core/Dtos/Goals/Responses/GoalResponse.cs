@@ -5,7 +5,7 @@ using Goals.Api.Domain.Enums;
 
 namespace Goals.Api.Core.Dtos.Goals.Responses;
 
-public record GoalResponse
+public sealed record GoalResponse
 {
     public Guid Id { get; set; }
     public string Name { get; init; }

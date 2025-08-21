@@ -2,7 +2,7 @@ using System;
 
 namespace Goals.Api.Domain.ValueObjects;
 
-public class EntityName
+public sealed class EntityName
 {
     private const int MaxLength = 50;
     public string Value { get; }

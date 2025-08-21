@@ -19,4 +19,4 @@ public record CreateGoalStepRequest(string Name, string Description, int Order, 
 /// <param name="Description">Description of step (Optional)</param>
 /// <param name="Order">Order of the step (Integer - should not be negative)</param>
 /// <param name="DueDate">Due date of step (Optional)</param>
-public record CreateStepForGoalRequest(Guid GoalId, string Name, string Description, int Order, DateTimeOffset? DueDate) : CreateGoalStepRequest(Name, Description, Order, DueDate);
+public sealed record CreateStepForGoalRequest(Guid GoalId, string Name, string Description, int Order, DateTimeOffset? DueDate) : CreateGoalStepRequest(Name, Description, Order, DueDate);

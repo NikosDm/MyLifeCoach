@@ -5,7 +5,7 @@ using Libraries.Common.Exceptions;
 
 namespace Goals.Api.Domain.ValueObjects;
 
-public class GoalPeriod : IPeriod
+public sealed class GoalPeriod : IPeriod
 {
     public DateTimeOffset StartDate { get; private set; }
     public DateTimeOffset? EndDate { get; private set; }

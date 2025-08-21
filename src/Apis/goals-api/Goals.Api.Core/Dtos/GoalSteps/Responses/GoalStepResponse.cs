@@ -3,7 +3,7 @@ using Goals.Api.Domain.Enums;
 
 namespace Goals.Api.Core.Dtos.GoalSteps.Responses;
 
-public record GoalStepResponse
+public sealed record GoalStepResponse
 {
     public Guid Id { get; set; }
     public string Name { get; init; }

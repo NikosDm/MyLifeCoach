@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Goals.Api.DataPersistence.Context;
 
-public class GoalsDbContext(DbContextOptions<GoalsDbContext> options) : DbContext(options)
+public sealed class GoalsDbContext(DbContextOptions<GoalsDbContext> options) : DbContext(options)
 {
     public DbSet<Goal> Goals { get; set; }
     public DbSet<GoalType> GoalTypes { get; set; }

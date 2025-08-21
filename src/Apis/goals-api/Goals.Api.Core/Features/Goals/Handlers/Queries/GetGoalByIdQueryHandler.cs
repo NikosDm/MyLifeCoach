@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.Goals.Handlers.Queries;
 
-public sealed class GetGoalByIdQueryHandler(
+internal sealed class GetGoalByIdQueryHandler(
     IGoalRepository goalRepository,
     ILogger<GetGoalByIdQueryHandler> logger) 
     : BaseQueryHandler<GetGoalByIdQuery, GoalResponse>(logger),

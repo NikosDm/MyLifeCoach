@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalTypes.Handlers.Commands;
 
-public sealed class CreateGoalTypeCommandHandler(
+internal sealed class CreateGoalTypeCommandHandler(
     IGoalTypeRepository goalTypeRepository,
     IValidator<CreateGoalTypeRequest> validator,
     ILogger<CreateGoalTypeCommandHandler> logger) 

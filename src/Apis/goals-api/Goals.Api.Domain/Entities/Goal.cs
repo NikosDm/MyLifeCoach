@@ -44,6 +44,10 @@ public class Goal : BaseEntity
         RecalculateProgress();
     }
 
+    // TODO Updating the status of Steps could be done  
+    // by sending Domain Event which would handle the update 
+    // of their status on the same or a different transaction. 
+    // For the moment it can handled that way too. 
     private void CheckStatus(GoalStatus newStatus)
     {
         if (Status == newStatus) return;

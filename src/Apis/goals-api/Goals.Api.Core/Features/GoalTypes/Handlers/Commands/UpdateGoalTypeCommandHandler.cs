@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalTypes.Handlers.Commands;
 
-public sealed class UpdateGoalTypeCommandHandler(
+internal sealed class UpdateGoalTypeCommandHandler(
     IGoalTypeRepository goalTypeRepository,
     IValidator<UpdateGoalTypeRequest> validator,
     ILogger<UpdateGoalTypeCommandHandler> logger) 

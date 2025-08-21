@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.Goals.Handlers.Commands;
 
-public sealed class CreateGoalCommandHandler(
+internal sealed class CreateGoalCommandHandler(
     IGoalRepository goalRepository,
     IValidator<CreateGoalRequest> validator,
     ILogger<CreateGoalCommandHandler> logger) 

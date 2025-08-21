@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalSteps.Handlers.Commands;
 
-public sealed class UpdateGoalStepCommandHandler(
+internal sealed class UpdateGoalStepCommandHandler(
     IGoalStepRepository goalStepRepository,
     IValidator<UpdateGoalStepRequest> validator,
     ILogger<UpdateGoalStepCommandHandler> logger) 

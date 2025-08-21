@@ -5,4 +5,4 @@ namespace Goals.Api.Core.Dtos.GoalTypes.Requests;
 /// </summary>
 /// <param name="Name">Name of Goal type (Required - should not exceed 50 characters)</param>
 /// <param name="Description">Description of Goal type (Optional)</param>
-public record CreateGoalTypeRequest(string Name, string Description);
+public sealed record CreateGoalTypeRequest(string Name, string Description);

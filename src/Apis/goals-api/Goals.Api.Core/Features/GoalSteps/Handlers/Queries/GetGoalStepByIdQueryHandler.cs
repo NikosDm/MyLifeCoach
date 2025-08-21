@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalSteps.Handlers.Queries;
 
-public sealed class GetGoalStepByIdQueryHandler(
+internal sealed class GetGoalStepByIdQueryHandler(
     IGoalStepRepository goalStepRepository,
     ILogger<GetGoalStepByIdQueryHandler> logger) 
     : BaseQueryHandler<GetGoalStepByIdQuery, GoalStepResponse>(logger),

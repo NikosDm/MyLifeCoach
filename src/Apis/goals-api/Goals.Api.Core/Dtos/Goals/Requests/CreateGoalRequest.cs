@@ -13,5 +13,5 @@ namespace Goals.Api.Core.Dtos.Goals.Requests;
 /// <param name="StartDate">Start date of goal (Required)</param>
 /// <param name="EndDate">End date of goal (optional)</param>
 /// <param name="Steps">List of goal steps (check <see cref="CreateGoalStepRequest"/> for full request schema)</param>
-public record CreateGoalRequest(string Name, string Description, Guid TypeId,
+public sealed record CreateGoalRequest(string Name, string Description, Guid TypeId,
     DateTimeOffset StartDate, DateTimeOffset? EndDate, IEnumerable<CreateGoalStepRequest> Steps); 

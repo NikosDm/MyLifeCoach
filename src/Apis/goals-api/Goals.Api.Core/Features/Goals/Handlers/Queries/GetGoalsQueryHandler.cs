@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.Goals.Handlers.Queries;
 
-public sealed class GetGoalsQueryHandler(
+internal sealed class GetGoalsQueryHandler(
     IGoalRepository goalRepository,
     ILogger<GetGoalsQueryHandler> logger) 
     : BaseQueryHandler<GetGoalsQuery, IReadOnlyList<GoalResponse>>(logger),

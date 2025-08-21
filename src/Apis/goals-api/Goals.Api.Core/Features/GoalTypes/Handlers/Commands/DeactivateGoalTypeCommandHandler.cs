@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalTypes.Handlers.Commands;
 
-public sealed class DeactivateGoalTypeCommandHandler(
+internal sealed class DeactivateGoalTypeCommandHandler(
     IGoalTypeRepository goalTypeRepository,
     ILogger<DeactivateGoalTypeCommandHandler> logger) 
     : BaseCommandHandler<DeactivateGoalTypeCommand, Guid>(logger),
