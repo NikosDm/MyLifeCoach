@@ -44,6 +44,7 @@ public static class ServiceCollectionExtensions
 
         services
             .AddScoped<ICommandHandler<UpdateGoalStepCommand, GoalStepResponse>, UpdateGoalStepCommandHandler>()
+            .AddScoped<ICommandHandler<DeleteGoalStepCommand, Guid>, DeleteGoalStepCommandHandler>()
             .AddScoped<IQueryHandler<GetGoalStepByIdQuery, GoalStepResponse>, GetGoalStepByIdQueryHandler>();
 
         return services;

@@ -18,7 +18,7 @@ public static class GoalStepEndpoints
     {
         var group = app
             .MapGroup("/api/goal-steps")
-            .WithTags("Goal steps")
+            .WithTags("Goal Steps")
             .RequireAuthorization("GoalsApiUser");
 
         group.MapGet("/{id:guid}", async (
@@ -49,6 +49,22 @@ public static class GoalStepEndpoints
         .WithSummary("Updates a goal step")
         .WithDescription("Updates a goal step")
         .Produces<GoalStepResponse>(StatusCodes.Status200OK)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status500InternalServerError);
+
+        group.MapDelete("/{id:guid}", async (
+            Guid id,
+            ICommandHandler<DeleteGoalStepCommand, Guid> handler,
+            CancellationToken token = default) =>
+        {
+            var result = await handler.Handle(new DeleteGoalStepCommand(id), token);
+            return TypedResults.Ok(result);
+        })
+        .WithName("DeleteGoalStep")
+        .WithSummary("Deletes a goal step")
+        .WithDescription("Soft deletes a goal step")
+        .Produces(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .ProducesProblem(StatusCodes.Status404NotFound)
         .ProducesProblem(StatusCodes.Status500InternalServerError);
