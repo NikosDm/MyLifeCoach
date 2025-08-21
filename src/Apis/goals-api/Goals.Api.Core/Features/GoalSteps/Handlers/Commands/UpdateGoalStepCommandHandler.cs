@@ -7,7 +7,10 @@ using Goals.Api.Core.Dtos.GoalSteps.Requests;
 using Goals.Api.Core.Dtos.GoalSteps.Responses;
 using Goals.Api.Core.Extensions;
 using Goals.Api.Core.Features.GoalSteps.Requests.Commands;
+using Goals.Api.Domain.Entities;
+using Goals.Api.Domain.ValueObjects;
 using Libraries.Common.Abstractions.Commands;
+using Libraries.Common.Exceptions;
 using Libraries.Common.Handlers;
 using Microsoft.Extensions.Logging;
 
@@ -27,9 +30,19 @@ public sealed class UpdateGoalStepCommandHandler(
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);
 
-        var entity = request.ToEntity();
+        var goalStep = await _goalStepRepository.GetByIdAsync(command.Id, token)
+            ?? throw new NotFoundException(nameof(GoalStep), command.Id);
 
-        var result = await _goalStepRepository.UpdateAsync(command.Id, entity, token);
+        goalStep.Update(
+            request.GoalId,
+            EntityName.Of(request.Name),
+            request.Description,
+            request.Order,
+            request.DueDate,
+            Progress.Of(request.Progress),
+            request.Status);
+
+        var result = await _goalStepRepository.UpdateAsync(goalStep, token);
 
         return result.ToResponse();
     }

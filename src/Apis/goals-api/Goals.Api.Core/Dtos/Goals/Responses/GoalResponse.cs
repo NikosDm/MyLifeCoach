@@ -10,7 +10,7 @@ public record GoalResponse
     public Guid Id { get; set; }
     public string Name { get; init; }
     public string Description { get; init; }
-    public string Type { get; init; }
+    public Guid TypeId { get; init; }
     public DateTimeOffset StartDate { get; init; }
     public DateTimeOffset? EndDate { get; init; }
     public GoalStatus Status { get; init; }

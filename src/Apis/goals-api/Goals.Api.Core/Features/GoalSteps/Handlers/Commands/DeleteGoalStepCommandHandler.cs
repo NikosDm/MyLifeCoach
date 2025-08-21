@@ -29,8 +29,8 @@ public sealed class DeleteGoalStepCommandHandler(
 
         if (goalStep.Status == GoalStepStatus.Deleted) throw new BadRequestException("Goal step is already deleted");
 
-        goalStep.Status = GoalStepStatus.Deleted;
-        var result = await _goalStepRepository.UpdateAsync(goalStepId, goalStep, token);
+        goalStep.SetStatus(GoalStepStatus.Deleted);
+        var result = await _goalStepRepository.UpdateAsync(goalStep, token);
 
         return result.Id;
     }

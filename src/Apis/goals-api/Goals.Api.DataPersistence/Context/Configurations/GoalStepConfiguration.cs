@@ -10,18 +10,30 @@ internal sealed class GoalStepConfiguration : IEntityTypeConfiguration<GoalStep>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(e => e.Name)
-              .IsRequired()
-              .HasMaxLength(50);
+        builder.ComplexProperty(
+            o => o.Name, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.Value)
+                    .HasColumnName(nameof(GoalStep.Name))
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
 
         builder.Property(e => e.Description)
               .IsRequired(false);
 
         builder.Property(e => e.Order)
-              .IsRequired();
+            .IsRequired();
 
-        builder.Property(e => e.Progress)
-              .IsRequired();
+        builder.ComplexProperty(
+            o => o.Progress, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.Value)
+                    .HasColumnName(nameof(GoalStep.Progress))
+                    .IsRequired();
+            });
 
         builder.ToTable(t =>
         {
@@ -29,15 +41,10 @@ internal sealed class GoalStepConfiguration : IEntityTypeConfiguration<GoalStep>
         });
 
         builder.Property(e => e.DueDate)
-              .IsRequired(false);
+            .IsRequired(false);
 
         builder.Property(e => e.Status)
               .HasConversion<int>()
               .IsRequired();
-              
-        builder.HasOne(e => e.Goal)
-              .WithMany(g => g.Steps)
-              .HasForeignKey(e => e.GoalId)
-              .OnDelete(DeleteBehavior.Cascade);
     }
 }

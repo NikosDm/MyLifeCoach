@@ -29,9 +29,8 @@ public sealed class DeactivateGoalTypeCommandHandler(
             throw new BadRequestException("Goal type is already inactive");
         }
 
-        goalType.IsActive = false;
-
-        var result = await _goalTypeRepository.UpdateAsync(goalType.Id, goalType, token);
+        goalType.Deactivate();
+        var result = await _goalTypeRepository.UpdateAsync(goalType, token);
 
         return result.Id;
     }

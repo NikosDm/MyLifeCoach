@@ -3,6 +3,7 @@ using System.Linq;
 using Goals.Api.Core.Dtos.GoalTypes.Requests;
 using Goals.Api.Core.Dtos.GoalTypes.Responses;
 using Goals.Api.Domain.Entities;
+using Goals.Api.Domain.ValueObjects;
 
 namespace Goals.Api.Core.Extensions;
 
@@ -13,7 +14,7 @@ public static class GoalTypeExtensions
             : new()
             {
                 Id = source.Id,
-                Name = source.Name,
+                Name = source.Name.Value,
                 Description = source.Description,
                 IsActive = source.IsActive
             };
@@ -23,19 +24,5 @@ public static class GoalTypeExtensions
 
     public static GoalType ToEntity(this CreateGoalTypeRequest source) =>
         source is null ? null
-            : new()
-            {
-                Name = source.Name,
-                Description = source.Description,
-                IsActive = true
-            };
-
-    public static GoalType ToEntity(this UpdateGoalTypeRequest source) =>
-        source is null ? null
-            : new()
-            {
-                Name = source.Name,
-                Description = source.Description,
-                IsActive = source.IsActive
-            };
+            : GoalType.Create(EntityName.Of(source.Name), source.Description);
 }

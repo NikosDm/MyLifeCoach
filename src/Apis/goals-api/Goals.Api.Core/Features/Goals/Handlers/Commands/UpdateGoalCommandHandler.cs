@@ -7,7 +7,10 @@ using Goals.Api.Core.Dtos.Goals.Requests;
 using Goals.Api.Core.Dtos.Goals.Responses;
 using Goals.Api.Core.Extensions;
 using Goals.Api.Core.Features.Goals.Requests.Commands;
+using Goals.Api.Domain.Entities;
+using Goals.Api.Domain.ValueObjects;
 using Libraries.Common.Abstractions.Commands;
+using Libraries.Common.Exceptions;
 using Libraries.Common.Handlers;
 using Microsoft.Extensions.Logging;
 
@@ -27,9 +30,17 @@ public sealed class UpdateGoalCommandHandler(
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);
 
-        var entity = request.ToEntity();
+        var goal = await _goalRepository.GetByIdAsync(command.Id, token)
+            ?? throw new NotFoundException(nameof(Goal), command.Id);
 
-        var result = await _goalRepository.UpdateAsync(command.Id, entity, token);
+        goal.Update(
+            EntityName.Of(request.Name),
+            request.Description,
+            request.TypeId,
+            GoalPeriod.Of(request.StartDate, request.EndDate),
+            request.Status);
+            
+        var result = await _goalRepository.UpdateAsync(goal, token);
 
         return result.ToResponse();
     }

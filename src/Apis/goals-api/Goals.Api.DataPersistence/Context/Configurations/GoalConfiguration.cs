@@ -1,5 +1,5 @@
-using System;
 using Goals.Api.Domain.Entities;
+using Goals.Api.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,26 +11,45 @@ internal sealed class GoalConfiguration : IEntityTypeConfiguration<Goal>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(e => e.Name)
-              .IsRequired()
-              .HasMaxLength(50);
+        builder.ComplexProperty(
+            o => o.Name, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.Value)
+                    .HasColumnName(nameof(Goal.Name))
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
 
         builder.Property(e => e.Description)
               .IsRequired(false);
 
-        builder.HasOne(e => e.Type)
-              .WithMany()   
+        builder.HasOne<GoalType>()
+              .WithMany()
               .HasForeignKey(e => e.TypeId)
               .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(e => e.Steps)
-              .WithOne(s => s.Goal)
-              .HasForeignKey(s => s.GoalId)
-              .OnDelete(DeleteBehavior.Cascade);
+        builder.ComplexProperty(
+            o => o.Period, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.StartDate)
+                    .HasColumnName(nameof(GoalPeriod.StartDate))
+                    .IsRequired();
 
-        // Progress 0..100 with a SQL check constraint (PostgreSQL)
-        builder.Property(e => e.Progress)
-              .IsRequired();
+                nameBuilder.Property(n => n.EndDate)
+                    .HasColumnName(nameof(GoalPeriod.EndDate))
+                    .IsRequired(false);
+            });
+
+        builder.ComplexProperty(
+            o => o.Progress, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.Value)
+                    .HasColumnName(nameof(Goal.Progress))
+                    .IsRequired();
+            });
 
         builder.ToTable(t =>
         {
@@ -38,7 +57,12 @@ internal sealed class GoalConfiguration : IEntityTypeConfiguration<Goal>
         });
 
         builder.Property(e => e.Status)
-              .HasConversion<int>()
-              .IsRequired();
+            .HasConversion<int>()
+            .IsRequired();
+            
+        builder.HasMany(e => e.Steps)
+            .WithOne()
+            .HasForeignKey(s => s.GoalId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

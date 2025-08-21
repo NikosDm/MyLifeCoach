@@ -50,20 +50,12 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
         return await query.Where(options).ToListAsync(token);
     }
 
-    public virtual async Task<TEntity> UpdateAsync(Guid id, TEntity entity, CancellationToken token = default)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken token = default)
     {
-        var currentEntity = await Entities.FindAsync([id], token)
-            ?? throw new NotFoundException($"Entity {nameof(TEntity)} with Id = {id} does not exist");
-        currentEntity = UpdateEntityValues(currentEntity, entity);
+        SetAuditValues(entity, AuditAction.Udpate);
         await StoreChangesAsync(token);
 
-        return currentEntity;
-    }
-
-    public virtual TEntity UpdateEntityValues(TEntity currentEntity, TEntity modifiedEntity)
-    {
-        SetAuditValues(currentEntity, AuditAction.Udpate);
-        return currentEntity;
+        return entity;
     }
 
     private void SetAuditValues(TEntity entity, AuditAction auditAction)
@@ -71,7 +63,7 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
         switch (auditAction)
         {
             case AuditAction.Create:
-                entity.Id = Guid.NewGuid();
+                entity.SetEntityId(Guid.NewGuid());
                 entity.CreatedAt = _timeProvider.GetUtcNow();
                 entity.LastUpdatedAt = _timeProvider.GetUtcNow();
                 entity.CreatedBy = _userContext.UserId ?? Guid.Empty;

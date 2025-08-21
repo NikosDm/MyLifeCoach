@@ -13,5 +13,5 @@ public interface IGoalStepRepository
     Task<GoalStep> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<IReadOnlyList<GoalStep>> SearchAsync(Expression<Func<GoalStep, bool>> options = null, CancellationToken token = default);
     Task<GoalStep> CreateAsync(GoalStep entity, CancellationToken token = default);
-    Task<GoalStep> UpdateAsync(Guid id, GoalStep entity, CancellationToken token = default);
+    Task<GoalStep> UpdateAsync(GoalStep entity, CancellationToken token = default);
 }

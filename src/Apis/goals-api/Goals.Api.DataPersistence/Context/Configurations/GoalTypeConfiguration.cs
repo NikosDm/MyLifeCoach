@@ -10,8 +10,17 @@ internal sealed class GoalTypeConfiguration : IEntityTypeConfiguration<GoalType>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(e => e.Name)
-              .IsRequired()
-              .HasMaxLength(50);
+        builder.ComplexProperty(
+            o => o.Name, nameBuilder =>
+            {
+                nameBuilder.IsRequired();
+                nameBuilder.Property(n => n.Value)
+                    .HasColumnName(nameof(GoalType.Name))
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+        builder.Property(e => e.Description)
+            .IsRequired(false);
     }
 }

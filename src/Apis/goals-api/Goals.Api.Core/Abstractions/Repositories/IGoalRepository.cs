@@ -13,5 +13,5 @@ public interface IGoalRepository
     Task<Goal> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<Goal> CreateAsync(Goal goal, CancellationToken token = default);
     Task<IReadOnlyList<Goal>> SearchAsync(Expression<Func<Goal, bool>> options = null, CancellationToken token = default);
-    Task<Goal> UpdateAsync(Guid id, Goal goal, CancellationToken token = default);
+    Task<Goal> UpdateAsync(Goal goal, CancellationToken token = default);
 }

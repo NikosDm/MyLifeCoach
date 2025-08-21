@@ -3,7 +3,7 @@ using System.Linq;
 using Goals.Api.Core.Dtos.Goals.Requests;
 using Goals.Api.Core.Dtos.Goals.Responses;
 using Goals.Api.Domain.Entities;
-using Goals.Api.Domain.Enums;
+using Goals.Api.Domain.ValueObjects;
 
 namespace Goals.Api.Core.Extensions;
 
@@ -14,13 +14,13 @@ public static class GoalExtensions
         : new()
         {
             Id = source.Id,
-            Name = source.Name,
+            Name = source.Name.Value,
             Description = source.Description,
-            StartDate = source.StartDate,
-            EndDate = source.EndDate,
+            StartDate = source.Period.StartDate,
+            EndDate = source.Period.EndDate,
             Status = source.Status,
-            Type = source.Type?.Name,
-            Progress = source.Progress,
+            TypeId = source.TypeId,
+            Progress = source.Progress.Value,
             Steps = source.Steps.ToResponse()
         };
 
@@ -28,29 +28,18 @@ public static class GoalExtensions
         => source?.Select(x => x.ToResponse());
 
     public static Goal ToEntity(this CreateGoalRequest source)
-        => source is null ? null
-        : new()
-        {
-            Name = source.Name,
-            Description = source.Description,
-            TypeId = source.TypeId,
-            StartDate = source.StartDate,
-            EndDate = source.EndDate,
-            Status = GoalStatus.NotStarted,
-            Progress = 0,
-            Steps = source.Steps.ToEntity().ToList()
-        };
+    {
+        if (source is null) return null;
 
-    public static Goal ToEntity(this UpdateGoalRequest source)
-        => source is null ? null
-        : new()
-        {
-            Name = source.Name,
-            Description = source.Description,
-            TypeId = source.TypeId,
-            StartDate = source.StartDate,
-            EndDate = source.EndDate,
-            Status = source.Status,
-            Progress = source.Progress
-        };
+        var goal = Goal.Create(
+            EntityName.Of(source.Name),
+            source.Description,
+            source.TypeId,
+            GoalPeriod.Of(source.StartDate, source.EndDate));
+
+        foreach (var step in source.Steps)
+            goal.AddGoalStep(step.ToEntity());
+
+        return goal;
+    }
 }

@@ -42,7 +42,7 @@ public sealed class CreateGoalRequestValidator : AbstractValidator<CreateGoalReq
         RuleFor(x => x.EndDate)
             .GreaterThanOrEqualTo(x => x.StartDate)
             .When(x => x.EndDate.HasValue)
-            .WithMessage("EndDate must be later than StartDate.");
+            .WithMessage(ValidationErrorLiterals.InvalidGivenPeriod);
 
         RuleForEach(x => x.Steps)
             .SetValidator(_stepValidator);

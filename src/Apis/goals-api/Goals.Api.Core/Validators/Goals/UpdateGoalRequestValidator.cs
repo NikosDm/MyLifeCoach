@@ -44,6 +44,6 @@ public sealed class UpdateGoalRequestValidator : AbstractValidator<UpdateGoalReq
 
         RuleFor(x => x.Progress)
             .InclusiveBetween(0, 100)
-            .WithMessage("Prorgress is a percentage");
+            .WithMessage("Prorgress is a percentage, it should be between 0 and 100");
     }
 }
