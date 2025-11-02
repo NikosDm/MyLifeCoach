@@ -1,6 +1,10 @@
 using System;
+
 using FluentValidation;
+
 using Goals.Api.Core.Dtos.GoalTypes.Requests;
+
+using Libraries.Common.Constants;
 
 namespace Goals.Api.Core.Validators.GoalTypes;
 
@@ -8,15 +12,15 @@ public sealed class CreateGoalTypeRequestValidator : AbstractValidator<CreateGoa
 {
     public CreateGoalTypeRequestValidator()
     {
-         RuleFor(x => x.Name)
-            .NotEmpty()
-            .WithMessage("Goal type must have a name")
-            .MaximumLength(50)
-            .WithMessage("Goal type's name should not exceed 50 characters");
+        RuleFor(x => x.Name)
+           .NotEmpty()
+           .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, "Name"))
+           .MaximumLength(50)
+           .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Name", "50"));
 
         RuleFor(x => x.Description)
             .MaximumLength(1000)
             .When(x => !string.IsNullOrWhiteSpace(x.Description))
-            .WithMessage("Description should not exceed 1000 characters");
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Description", "1000"));
     }
 }
