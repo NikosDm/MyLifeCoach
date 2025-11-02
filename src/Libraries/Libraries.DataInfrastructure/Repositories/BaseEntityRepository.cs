@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Libraries.Common.Exceptions;
 using Libraries.DataInfrastructure.Enums;
 using Libraries.Common.Entities;
 using Libraries.Common.Abstractions;
