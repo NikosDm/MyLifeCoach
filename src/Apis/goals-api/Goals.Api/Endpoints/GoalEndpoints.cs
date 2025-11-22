@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+
+using Goals.Api.Constants;
 using Goals.Api.Core.Dtos.Goals.Requests;
 using Goals.Api.Core.Dtos.Goals.Responses;
 using Goals.Api.Core.Dtos.GoalSteps.Requests;
@@ -8,8 +10,10 @@ using Goals.Api.Core.Dtos.GoalSteps.Responses;
 using Goals.Api.Core.Extensions;
 using Goals.Api.Core.Features.Goals.Requests.Commands;
 using Goals.Api.Core.Features.Goals.Requests.Queries;
+
 using Libraries.Common.Abstractions.Commands;
 using Libraries.Common.Abstractions.Queries;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -21,9 +25,9 @@ public static class GoalEndpoints
     public static RouteGroupBuilder MapGoalEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app
-            .MapGroup("/api/goals")
+            .MapGroup(RouteConstants.GoalsApiPrefix)
             .WithTags("Goals")
-            .RequireAuthorization("GoalsApiUser");
+            .RequireAuthorization(ApiConstants.GoalsApiUserPolicy);
 
         group.MapGet("/", async (
             IQueryHandler<GetGoalsQuery, IReadOnlyList<GoalResponse>> handler,

@@ -1,11 +1,15 @@
 using System;
 using System.Threading;
+
+using Goals.Api.Constants;
 using Goals.Api.Core.Dtos.GoalSteps.Requests;
 using Goals.Api.Core.Dtos.GoalSteps.Responses;
 using Goals.Api.Core.Features.GoalSteps.Requests.Commands;
 using Goals.Api.Core.Features.GoalSteps.Requests.Queries;
+
 using Libraries.Common.Abstractions.Commands;
 using Libraries.Common.Abstractions.Queries;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -17,9 +21,9 @@ public static class GoalStepEndpoints
     public static RouteGroupBuilder MapGoalStepEndpoints(this IEndpointRouteBuilder app)
     {
         var group = app
-            .MapGroup("/api/goal-steps")
+            .MapGroup(RouteConstants.GoalStepsApiPrefix)
             .WithTags("Goal Steps")
-            .RequireAuthorization("GoalsApiUser");
+            .RequireAuthorization(ApiConstants.GoalsApiUserPolicy);
 
         group.MapGet("/{id:guid}", async (
             Guid id,
