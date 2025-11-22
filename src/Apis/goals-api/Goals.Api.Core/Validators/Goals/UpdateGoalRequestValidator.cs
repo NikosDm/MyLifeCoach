@@ -3,7 +3,9 @@ using System;
 using FluentValidation;
 
 using Goals.Api.Core.Abstractions.Repositories;
+using Goals.Api.Core.Constants;
 using Goals.Api.Core.Dtos.Goals.Requests;
+using Goals.Api.Domain.Entities;
 
 using Libraries.Common.Constants;
 
@@ -19,24 +21,24 @@ public sealed class UpdateGoalRequestValidator : AbstractValidator<UpdateGoalReq
 
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, "Name"))
+            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(UpdateGoalRequest.Name)))
             .MaximumLength(50)
-            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Name", "50"));
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, nameof(UpdateGoalRequest.Name), 50));
 
         RuleFor(x => x.Description)
             .MaximumLength(1000)
             .When(x => x.Description != null)
-            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Description", "1000"));
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, nameof(UpdateGoalRequest.Description), 1000));
 
         RuleFor(x => x.TypeId)
             .NotEmpty()
-            .WithMessage("A type must be selected")
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterMustBePresent, nameof(GoalType)))
             .MustAsync(async (typeId, token) =>
             {
                 var goalType = await _goalTypeRepository.GetByIdAsync(typeId, token);
                 return goalType is not null && goalType.IsActive;
             })
-            .WithMessage("Given type does not exist or is inactive");
+            .WithMessage(GoalValidationErrorLiterals.NonExistentOrInactiveGoalType);
 
         RuleFor(x => x.StartDate).NotEmpty();
         RuleFor(x => x.EndDate)
@@ -48,6 +50,6 @@ public sealed class UpdateGoalRequestValidator : AbstractValidator<UpdateGoalReq
 
         RuleFor(x => x.Progress)
             .InclusiveBetween(0, 100)
-            .WithMessage("Prorgress is a percentage, it should be between 0 and 100");
+            .WithMessage(string.Format(ValidationErrorLiterals.MustBePercentage, nameof(UpdateGoalRequest.Progress)));
     }
 }

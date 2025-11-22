@@ -1,5 +1,3 @@
-using System;
-
 using FluentValidation;
 
 using Goals.Api.Core.Dtos.GoalTypes.Requests;
@@ -14,13 +12,13 @@ public sealed class UpdateGoalTypeRequestValidator : AbstractValidator<UpdateGoa
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, "Name"))
+            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(UpdateGoalTypeRequest.Name)))
             .MaximumLength(50)
-            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Name", "50"));
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, nameof(UpdateGoalTypeRequest.Name), 50));
 
         RuleFor(x => x.Description)
             .MaximumLength(1000)
             .When(x => !string.IsNullOrWhiteSpace(x.Description))
-            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, "Description", "1000"));
+            .WithMessage(string.Format(ValidationErrorLiterals.ParameterExceedLimit, nameof(UpdateGoalTypeRequest.Description), 1000));
     }
 }
