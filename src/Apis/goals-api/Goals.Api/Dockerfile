@@ -12,6 +12,7 @@ COPY src/Apis/goals-api/Goals.Api.Domain/Goals.Api.Domain.csproj src/Apis/goals-
 # Copy csproj files for Libraries
 COPY src/Libraries/Libraries.Common/Libraries.Common.csproj src/Libraries/Libraries.Common/
 COPY src/Libraries/Libraries.DataInfrastructure/Libraries.DataInfrastructure.csproj src/Libraries/Libraries.DataInfrastructure/
+COPY src/Libraries/Libraries.Api/Libraries.Api.csproj src/Libraries/Libraries.Api/
 
 # Restore 
 RUN dotnet restore "./src/Apis/goals-api/Goals.Api/Goals.Api.csproj"
