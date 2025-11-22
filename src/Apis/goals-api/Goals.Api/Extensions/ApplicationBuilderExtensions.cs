@@ -1,8 +1,7 @@
 using Goals.Api.DataPersistence.Context;
 using Goals.Api.Endpoints;
-using HealthChecks.UI.Client;
+
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,18 +23,5 @@ public static class ApplicationBuilderExtensions
         app.MapGoalTypeEndpoints();
         app.MapGoalEndpoints();
         app.MapGoalStepEndpoints();
-    }
-
-    public static IApplicationBuilder UseApiServices(this IApplicationBuilder app)
-    {
-        app.UseExceptionHandler(o => { });
-
-        app.UseHealthChecks("/health",
-            new HealthCheckOptions
-            {
-                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-            });
-
-        return app;
     }
 }

@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Libraries.Api\Libraries.Api.csproj" />
     <ProjectReference Include="..\Goals.Api.DataPersistence\Goals.Api.DataPersistence.csproj" />
     <ProjectReference Include="..\Goals.Api.Core\Goals.Api.Core.csproj" />
   </ItemGroup>

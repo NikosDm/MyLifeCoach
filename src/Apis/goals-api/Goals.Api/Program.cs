@@ -1,12 +1,13 @@
 using Goals.Api.DataPersistence.Extensions;
 using Goals.Api.Core.Extensions;
-using Goals.Api.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Goals.Api.Extensions;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration;
 using System;
+using Libraries.Api.Extensions;
+using Libraries.Api.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,10 +50,10 @@ builder.Services.AddSwaggerGen(static c =>
 });
 
 builder.Services
+    .AddHttpUserContext()
     .AddDataPersistence(builder.Configuration)
     .AddCore()
-    .AddIdentityAuthentication(builder.Configuration)
-    .AddUserContext();
+    .AddIdentityAuthentication(builder.Configuration);
 
 builder.Services.AddExceptionHandler<ApiExceptionHandler>();
 builder.Services.AddHealthChecks()
