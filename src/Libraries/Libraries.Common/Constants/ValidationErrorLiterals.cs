@@ -9,4 +9,9 @@ public static class ValidationErrorLiterals
     public const string BetweenParameter = "{0} must be between {1} and {2}";
     public const string InvalidEmailAddressFormat = "Invalid email address format";
     public const string InvalidParameter = "{0} is invalid";
+    public const string PastDateNotAllowed = "{0} cannot be a past date";
+    public const string PropDoesNotExist = "{0} does not exist";
+    public const string ParameterMustBePresent = "{0} must be present";
+    public const string FutureDateNotAllowed = "{0} cannot be a future date";
+    public const string MustBePercentage = "{0} must be between 0 and 100";
 }
