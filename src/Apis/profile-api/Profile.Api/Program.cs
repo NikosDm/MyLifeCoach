@@ -1,17 +1,34 @@
+using Libraries.Api.Extensions;
+
+using Microsoft.AspNetCore.Builder;
+
+using Profile.Api.Core.Extensions;
+using Profile.Api.DataPersistence.Extensions;
+using Profile.Api.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services
+    .AddApiDocumentation()
+    .AddHttpUserContext()
+    .AddIdentityAuthentication(builder.Configuration)
+    .AddApiServices(builder.Configuration)
+    .AddCore()
+    .AddDataPersistence(builder.Configuration);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseMigration();
+
+app.UseAuthentication();
+
+app.UseAuthorization();
+
+app.UseApiEndpoints();
+
+app.UseApiServices();
 
 app.Run();
