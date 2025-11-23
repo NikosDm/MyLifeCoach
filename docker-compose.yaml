@@ -64,5 +64,21 @@ services:
       postgres:
         condition: service_healthy
 
+  profile-api:
+    container_name: profile-api
+    image: nikosdmthom/mylifecoach/profile-api:latest
+    restart: "unless-stopped"
+    build:
+      context: .
+      dockerfile: src/Apis/profile-api/Profile.Api/Dockerfile
+    environment:
+      - ASPNETCORE_HTTP_PORTS=3020
+    ports:
+      - "3020:3020"
+      - "3320:3320"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   postgres_data:
