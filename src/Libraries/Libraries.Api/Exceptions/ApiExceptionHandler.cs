@@ -26,7 +26,7 @@ public sealed class ApiExceptionHandler : IExceptionHandler
     {
         _logger.LogError("Error message: {exceptionMessage}, Time of occurence {time}", exception.Message, DateTime.UtcNow);
 
-        (string Detail, string Title, int StatusCode) = exception switch
+        (string detail, string title, int statusCode) = exception switch
         {
             InternalServerException =>
             (
@@ -52,6 +52,12 @@ public sealed class ApiExceptionHandler : IExceptionHandler
                 exception.GetType().Name,
                 httpContext.Response.StatusCode = StatusCodes.Status404NotFound
             ),
+            InvalidUserContextException =>
+            (
+                exception.Message,
+                exception.GetType().Name,
+                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError
+            ),
             _ =>
             (
                 exception.Message,
@@ -62,9 +68,9 @@ public sealed class ApiExceptionHandler : IExceptionHandler
 
         var problemDetails = new ProblemDetails
         {
-            Title = Title,
-            Detail = Detail,
-            Status = StatusCode,
+            Title = title,
+            Detail = detail,
+            Status = statusCode,
             Instance = httpContext.Request.Path
         };
 
