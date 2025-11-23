@@ -60,7 +60,7 @@ public static class GoalTypeEndpoints
             CancellationToken token = default) =>
         {
             var result = await handler.Handle(new CreateGoalTypeCommand(request), token);
-            return TypedResults.Created($"/api/goal-types/{result.Id}", new { result.Id });
+            return TypedResults.Created($"{RouteConstants.GoalTypesApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateGoalType")
         .WithSummary("Creates a goal type")

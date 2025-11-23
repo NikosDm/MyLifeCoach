@@ -63,7 +63,7 @@ public static class GoalEndpoints
             CancellationToken token = default) =>
         {
             var result = await handler.Handle(new CreateGoalCommand(request), token);
-            return TypedResults.Created($"/api/goals/{result.Id}", new { result.Id });
+            return TypedResults.Created($"{RouteConstants.GoalsApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateGoal")
         .WithSummary("Creates a new goal")
@@ -79,7 +79,7 @@ public static class GoalEndpoints
             CancellationToken token = default) =>
         {
             var result = await handler.Handle(new CreateGoalStepForGoalCommand(request.ToRequestForGoal(id)), token);
-            return TypedResults.Created($"/api/goal-steps/{result.Id}", new { result.Id });
+            return TypedResults.Created($"{RouteConstants.GoalStepsApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateStepForGoal")
         .WithSummary("Creates a new step for a goal")

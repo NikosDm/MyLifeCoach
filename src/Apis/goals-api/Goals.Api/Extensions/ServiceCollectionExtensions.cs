@@ -2,6 +2,7 @@ using System;
 
 using Goals.Api.Constants;
 
+using Libraries.Api.Exceptions;
 using Libraries.Api.Extensions;
 using Libraries.Common.Constants;
 
@@ -70,6 +71,15 @@ public static class ServiceCollectionExtensions
                 p.RequireClaim("scope", "goals-api");
                 p.RequireRole(SecurityConstants.ADMIN_ROLE);
             });
+
+        return services;
+    }
+
+    public static IServiceCollection AddApiServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddExceptionHandler<ApiExceptionHandler>();
+        services.AddHealthChecks()
+            .AddNpgSql(configuration.GetConnectionString("GoalsDB"));
 
         return services;
     }
