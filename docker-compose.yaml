@@ -64,13 +64,13 @@ services:
       postgres:
         condition: service_healthy
 
-  profile-api:
-    container_name: profile-api
-    image: nikosdmthom/mylifecoach/profile-api:latest
+  profiles-api:
+    container_name: profiles-api
+    image: nikosdmthom/mylifecoach/profiles-api:latest
     restart: "unless-stopped"
     build:
       context: .
-      dockerfile: src/Apis/profile-api/Profile.Api/Dockerfile
+      dockerfile: src/Apis/profiles-api/Profiles.Api/Dockerfile
     environment:
       - ASPNETCORE_HTTP_PORTS=3020
     ports:

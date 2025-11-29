@@ -15,7 +15,7 @@ public static class Config
     public static IEnumerable<ApiScope> ApiScopes =>
         [
             new ApiScope("goals-api", "Goals API access"),
-            new ApiScope("profile-api", "Profile API access"),
+            new ApiScope("profiles-api", "Profile API access"),
         ];
 
     public static IEnumerable<Client> Clients =>
@@ -26,7 +26,7 @@ public static class Config
                 ClientName = "Postman Client",
                 ClientSecrets = { new Secret("NotABigSecretHere".Sha256()) },
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPasswordAndClientCredentials,
-                AllowedScopes = { "openid", "profile", "goals-api", "profile-api" },
+                AllowedScopes = { "openid", "profile", "goals-api", "profiles-api" },
                 RedirectUris = { "https://www.getpostman.com/oath2/callback" }
             },
 
@@ -42,7 +42,7 @@ public static class Config
                 PostLogoutRedirectUris = { "https://localhost:44300/signout-callback-oidc" },
 
                 AllowOfflineAccess = true,
-                AllowedScopes = { "openid", "profile", "goals-api", "profile-api" },
+                AllowedScopes = { "openid", "profile", "goals-api", "profiles-api" },
                 AllowAccessTokensViaBrowser = true
             },
         ];
