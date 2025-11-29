@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Goals.Api.DataPersistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Goals.Api.DataPersistence.Migrations
 {
     [DbContext(typeof(GoalsDbContext))]
-    partial class GoalsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251129013029_UpdateVersion")]
+    partial class UpdateVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
