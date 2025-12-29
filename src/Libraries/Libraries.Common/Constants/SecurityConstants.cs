@@ -10,4 +10,6 @@ public static class SecurityConstants
     public const string SUB_CLAIM = "sub";
     public const string USERNAME_CLAIM = "username";
     public const string ROLE_CLAIM = "role";
+    public const string IS_ACTIVE_CLAIM = "is_active";
+    public const string IS_PENDING_VERIFICATION = "is_pending_verification";
 }
