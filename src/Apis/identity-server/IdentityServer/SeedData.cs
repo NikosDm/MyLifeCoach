@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Claims;
+
 using IdentityModel;
-using IdentityServer.DataAccess;
+
 using IdentityServer.DataAccess.Entities;
+
 using Libraries.Common.Constants;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,7 +35,7 @@ public static class SeedData
 
         if (admin is null)
         {
-            admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true };
+            admin = new ApplicationUser { UserName = adminEmail, Email = adminEmail, EmailConfirmed = true, FullName = "Internal Admin", IsActive = true, IsPendingVerification = false };
             var result = userManager.CreateAsync(admin, "admin12345").GetAwaiter().GetResult();
 
             if (!result.Succeeded)
@@ -42,7 +45,9 @@ public static class SeedData
 
             result = userManager.AddClaimsAsync(admin, [
                 new Claim(JwtClaimTypes.Name, "Internal Admin"),
-                new Claim(JwtClaimTypes.Role, SecurityConstants.ADMIN_ROLE)
+                new Claim(JwtClaimTypes.Role, SecurityConstants.ADMIN_ROLE),
+                new Claim(SecurityConstants.IS_ACTIVE_CLAIM, "true"),
+                new Claim(SecurityConstants.IS_PENDING_VERIFICATION, "false"),
             ]).Result;
 
             if (!result.Succeeded)

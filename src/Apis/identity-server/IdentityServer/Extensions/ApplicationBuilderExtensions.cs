@@ -1,8 +1,10 @@
 using IdentityServer.DataAccess.Context;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+
 using Serilog;
 
 namespace IdentityServer.Extensions;
@@ -11,6 +13,7 @@ public static class ApplicationBuilderExtensions
 {
     public static WebApplication UseIdentityServerPipeline(this WebApplication app)
     {
+        app.UseCors();
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())
@@ -28,7 +31,7 @@ public static class ApplicationBuilderExtensions
 
         return app;
     }
-    
+
     public static IApplicationBuilder UseMigration(this IApplicationBuilder app)
     {
         using var scope = app.ApplicationServices.CreateScope();

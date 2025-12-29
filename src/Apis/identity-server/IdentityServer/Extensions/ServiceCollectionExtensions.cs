@@ -1,11 +1,11 @@
+using IdentityServer.Core.Extensions;
 using IdentityServer.DataAccess.Entities;
 using IdentityServer.DataAccess.Extensions;
 using IdentityServer.Services;
-using Microsoft.AspNetCore.Hosting;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace IdentityServer.Extensions;
 
@@ -17,9 +17,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddRazorPages();
 
-        services.AddIdentityDb(configuration);
-
         services
+            .AddIdentityServerCore()
+            .AddIdentityDb(configuration)
             .AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
@@ -34,7 +34,7 @@ public static class ServiceCollectionExtensions
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<UserProfileService>();
 
-        services.ConfigureApplicationCookie(options => 
+        services.ConfigureApplicationCookie(options =>
         {
             options.Cookie.SameSite = SameSiteMode.Lax;
         });
