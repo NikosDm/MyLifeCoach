@@ -5,6 +5,7 @@ WORKDIR /app
 
 # Copy csproj files for Identity Server 
 COPY src/Apis/identity-server/IdentityServer/IdentityServer.csproj src/Apis/identity-server/IdentityServer/
+COPY src/Apis/identity-server/IdentityServer.Core/IdentityServer.Core.csproj src/Apis/identity-server/IdentityServer.Core/
 COPY src/Apis/identity-server/IdentityServer.DataAccess/IdentityServer.DataAccess.csproj src/Apis/identity-server/IdentityServer.DataAccess/
 
 # Copy csproj files for Libraries
