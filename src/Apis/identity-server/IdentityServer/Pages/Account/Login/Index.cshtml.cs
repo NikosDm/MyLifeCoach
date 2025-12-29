@@ -1,18 +1,19 @@
-// Copyright (c) Duende Software. All rights reserved.
-// See LICENSE in the project root for license information.
-
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Duende.IdentityServer;
 using Duende.IdentityServer.Events;
 using Duende.IdentityServer.Models;
 using Duende.IdentityServer.Services;
 using Duende.IdentityServer.Stores;
-using IdentityServer.DataAccess.Entities;
+
+using IdentityServer.Core.Abstractions;
+using IdentityServer.Core.Dtos.Requests;
+using IdentityServer.Pages.Account.Login;
+
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -20,30 +21,28 @@ namespace IdentityServer.Pages.Login;
 
 [SecurityHeaders]
 [AllowAnonymous]
+[ValidateAntiForgeryToken]
 public class Index : PageModel
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly IAccountService _accountService;
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
     private readonly IAuthenticationSchemeProvider _schemeProvider;
     private readonly IIdentityProviderStore _identityProviderStore;
 
     public ViewModel View { get; set; } = default!;
-        
+
     [BindProperty]
     public InputModel Input { get; set; } = default!;
-        
+
     public Index(
         IIdentityServerInteractionService interaction,
         IAuthenticationSchemeProvider schemeProvider,
         IIdentityProviderStore identityProviderStore,
         IEventService events,
-        UserManager<ApplicationUser> userManager,
-        SignInManager<ApplicationUser> signInManager)
+        IAccountService accountService)
     {
-        _userManager = userManager;
-        _signInManager = signInManager;
+        _accountService = accountService;
         _interaction = interaction;
         _schemeProvider = schemeProvider;
         _identityProviderStore = identityProviderStore;
@@ -53,7 +52,7 @@ public class Index : PageModel
     public async Task<IActionResult> OnGet(string returnUrl)
     {
         await BuildModelAsync(returnUrl);
-            
+
         if (View.IsExternalLoginOnly)
         {
             // we only have one option for logging in and it's an external provider
@@ -62,7 +61,7 @@ public class Index : PageModel
 
         return Page();
     }
-        
+
     public async Task<IActionResult> OnPost()
     {
         // check if we are in the context of an authorization request
@@ -100,11 +99,10 @@ public class Index : PageModel
 
         if (ModelState.IsValid)
         {
-            var result = await _signInManager.PasswordSignInAsync(Input.Username!, Input.Password!, Input.RememberLogin, lockoutOnFailure: true);
-            if (result.Succeeded)
+            var result = await _accountService.LoginAsync(new LoginUserRequest(Input.Username!, Input.Password!, Input.RememberLogin));
+            if (result.Result.Succeeded)
             {
-                var user = await _userManager.FindByNameAsync(Input.Username!);
-                await _events.RaiseAsync(new UserLoginSuccessEvent(user!.UserName, user.Id, user.UserName, clientId: context?.Client.ClientId));
+                await _events.RaiseAsync(new UserLoginSuccessEvent(result.User.Username, result.User.Id, result.User.Username, clientId: context?.Client.ClientId));
                 Telemetry.Metrics.UserLogin(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider);
 
                 if (context != null)
@@ -140,7 +138,7 @@ public class Index : PageModel
             }
 
             const string error = "invalid credentials";
-            await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, error, clientId:context?.Client.ClientId));
+            await _events.RaiseAsync(new UserLoginFailureEvent(Input.Username, error, clientId: context?.Client.ClientId));
             Telemetry.Metrics.UserLoginFailure(context?.Client.ClientId, IdentityServerConstants.LocalIdentityProvider, error);
             ModelState.AddModelError(string.Empty, LoginOptions.InvalidCredentialsErrorMessage);
         }
@@ -156,7 +154,7 @@ public class Index : PageModel
         {
             ReturnUrl = returnUrl
         };
-            
+
         var context = await _interaction.GetAuthorizationContextAsync(returnUrl);
         if (context?.IdP != null && await _schemeProvider.GetSchemeAsync(context.IdP) != null)
         {
@@ -172,7 +170,7 @@ public class Index : PageModel
 
             if (!local)
             {
-                View.ExternalProviders = new[] { new ViewModel.ExternalProvider ( authenticationScheme: context.IdP ) };
+                View.ExternalProviders = [new ViewModel.ExternalProvider(authenticationScheme: context.IdP)];
             }
 
             return;
