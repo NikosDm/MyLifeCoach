@@ -1,72 +1,67 @@
-using System.Security.Claims;
+using System;
 using System.Threading.Tasks;
-using IdentityModel;
-using IdentityServer.DataAccess.Entities;
-using Libraries.Common.Constants;
+
+using IdentityServer.Core.Abstractions;
+using IdentityServer.Core.Dtos.Requests;
+
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace IdentityServer.Pages.Account.Register
+namespace IdentityServer.Pages.Account.Register;
+
+[SecurityHeaders]
+[AllowAnonymous]
+[ValidateAntiForgeryToken]
+public class Index(IAccountService accountService) : PageModel
 {
-    [SecurityHeaders]
-    [AllowAnonymous]
-    public class Index : PageModel
+    private readonly IAccountService _accountService = accountService
+        ?? throw new ArgumentNullException(nameof(accountService));
+
+    [BindProperty]
+    public RegisterViewModel Input { get; set; }
+
+    [BindProperty]
+    public bool RegisterSuccess { get; set; }
+
+    [BindProperty]
+    public bool Loading { get; set; }
+
+    public IActionResult OnGet(string returnUrl)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public Index(UserManager<ApplicationUser> userManager)
+        Input = new RegisterViewModel
         {
-            _userManager = userManager;
-        }
+            ReturnUrl = returnUrl,
+        };
 
-        [BindProperty]
-        public RegisterViewModel Input { get; set; }
+        return Page();
+    }
 
-        [BindProperty]
-        public bool RegisterSuccess { get; set; }
+    public async Task<IActionResult> OnPost()
+    {
+        if (Input.Button != "register") return Redirect("~/");
 
-        public IActionResult OnGet(string returnUrl)
+        if (ModelState.IsValid)
         {
-            Input = new RegisterViewModel
+            Loading = true;
+            var request = new CreateUserRequest(Input.Email, Input.Password, Input.Username, Input.FullName);
+            var result = await _accountService.CreateAsync(request);
+
+            if (result.Result.Succeeded)
             {
-                ReturnUrl = returnUrl,
-            };
-
-            return Page();
-        }
-
-        public async Task<IActionResult> OnPost()
-        {
-            if (Input.Button != "register") return Redirect("~/");
-
-            if (ModelState.IsValid)
+                RegisterSuccess = true;
+            }
+            else
             {
-                var user = new ApplicationUser
+                foreach (var error in result.Result.Errors)
                 {
-                    UserName = Input.Username,
-                    Email = Input.Email,
-                    EmailConfirmed = true
-                };
-
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
-                    await _userManager.AddToRoleAsync(user, SecurityConstants.USER_ROLE);
-
-                    await _userManager.AddClaimsAsync(user,
-                    [
-                        new Claim(JwtClaimTypes.Name, Input.FullName),
-                        new Claim(JwtClaimTypes.Role, SecurityConstants.USER_ROLE),
-                    ]);
-
-                    RegisterSuccess = true;
+                    ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
 
-            return Page();
+            Loading = false;
         }
+
+        return Page();
     }
 }

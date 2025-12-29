@@ -2,54 +2,90 @@
 @model IdentityServer.Pages.Account.Register.Index
 
 <div>
-    <partial name="_ValidationSummary" />
-
     <div class="row">
         <div class="col-6 offset-3">
             <div class="card">
                 <div class="card-header">
-                    <h2>Register</h2>
+                    @if (!Model.RegisterSuccess)
+                    {
+                        <h2>Register</h2>
+                    }
+                    else
+                    {
+                        <h2>Registration Successful!!</h2>
+                    }
                 </div>
                 <div class="card-body">
-                    <form asp-page="/Account/Register/Index">
-                        <input type="hidden" asp-for="Input.ReturnUrl" />
-
-                        <div class="form-group">
-                            <label asp-for="Input.Username"></label>
-                            <input class="form-control" placeholder="Username" asp-for="Input.Username" autofocus>
+                    @if (Model.RegisterSuccess && !Model.Loading)
+                    {
+                        <div class="alert alert-success mt-2">
+                            <h5>You have successfully registered <strong>@Model.Input.FullName</strong>!!</h5>
+                            <span>The admins will review the registration and they will activate your account
+                                shortly.</span>
                         </div>
+                    }
+                    else if (!Model.RegisterSuccess && !Model.Loading)
+                    {
+                        <form asp-page="/Account/Register/Index">
+                            <input type="hidden" asp-for="Input.ReturnUrl" />
 
-                        <div class="form-group">
-                            <label asp-for="Input.Email"></label>
-                            <input class="form-control" placeholder="Email" asp-for="Input.Email">
+                            <div class="form-group">
+                                <label asp-for="Input.Username"></label>
+                                <input required class="form-control" placeholder="Username" asp-for="Input.Username"
+                                    autofocus>
+                                <span asp-validation-for="Input.Username" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.Email"></label>
+                                <input required class="form-control" placeholder="Email" asp-for="Input.Email">
+                                <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.FullName"></label>
+                                <input required class="form-control" placeholder="Full name" asp-for="Input.FullName">
+                                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Input.Password"></label>
+                                <input required type="password" class="form-control" placeholder="Password"
+                                    asp-for="Input.Password" autocomplete="off">
+                                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col">
+                                    <button class="btn btn-primary w-100" name="Input.Button"
+                                        value="register">Register</button>
+                                </div>
+                                <div class="col">
+                                    <button class="btn btn-secondary w-100" name="Input.Button"
+                                        value="cancel">Cancel</button>
+                                </div>
+                            </div>
+
+                            <a class="pt-3 d-block text-center" asp-page="../Login/Index"
+                                asp-route-returnUrl="@Model.Input.ReturnUrl">
+                                Already registered? Login here
+                            </a>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
                         </div>
-
-                        <div class="form-group">
-                            <label asp-for="Input.FullName"></label>
-                            <input class="form-control" placeholder="Full name" asp-for="Input.FullName">
-                        </div>
-
-                        <div class="form-group">
-                            <label asp-for="Input.Password"></label>
-                            <input type="password" class="form-control" placeholder="Password" asp-for="Input.Password" autocomplete="off">
-                        </div>
-
-                        <a class="pb-2 d-block" asp-page="../Login/Index" asp-route-returnUrl="@Model.Input.ReturnUrl">
-                            Already registered? Login here
-                        </a>
-                        
-                        <button class="btn btn-primary" name="Input.Button" value="register">Register</button>
-                        <button class="btn btn-secondary" name="Input.Button" value="cancel">Cancel</button>
-                    </form>
+                    }
                 </div>
-
-                @if(Model.RegisterSuccess)
-                {
-                    <div class="alert alert-success mt-2">
-                        <strong>Successfully registered</strong> - You can now login
-                    </div>
-                }
             </div>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-10">
+            <partial name="_ValidationSummary" />
         </div>
     </div>
 </div>
