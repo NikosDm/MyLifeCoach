@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profiles.Api.Core", "src\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Profiles.Api", "src\Apis\profiles-api\Profiles.Api\Profiles.Api.csproj", "{57BA178D-1AC8-4470-AA65-FC679C6CD5F7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServer.Core", "src\Apis\identity-server\IdentityServer.Core\IdentityServer.Core.csproj", "{64D29A99-EE3C-4A38-A104-0F77B9277072}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -207,6 +209,18 @@ Global
 		{57BA178D-1AC8-4470-AA65-FC679C6CD5F7}.Release|x64.Build.0 = Release|Any CPU
 		{57BA178D-1AC8-4470-AA65-FC679C6CD5F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{57BA178D-1AC8-4470-AA65-FC679C6CD5F7}.Release|x86.Build.0 = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|x64.Build.0 = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Debug|x86.Build.0 = Debug|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|x64.ActiveCfg = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|x64.Build.0 = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|x86.ActiveCfg = Release|Any CPU
+		{64D29A99-EE3C-4A38-A104-0F77B9277072}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -230,5 +244,6 @@ Global
 		{DCFFEA56-844F-49A4-AEF1-0DC7192AC314} = {5570BFF0-0FF1-19AB-7FA4-C5EB476382C8}
 		{7E6CDA7A-3F4B-45A4-A474-767F8FCDF453} = {5570BFF0-0FF1-19AB-7FA4-C5EB476382C8}
 		{57BA178D-1AC8-4470-AA65-FC679C6CD5F7} = {5570BFF0-0FF1-19AB-7FA4-C5EB476382C8}
+		{64D29A99-EE3C-4A38-A104-0F77B9277072} = {56CB6977-6CE7-4D11-8DBB-A67F02BE60DE}
 	EndGlobalSection
 EndGlobal
