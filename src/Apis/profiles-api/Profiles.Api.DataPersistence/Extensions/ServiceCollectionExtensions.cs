@@ -1,6 +1,8 @@
-using Microsoft.EntityFrameworkCore;
+using Libraries.DataInfrastructure.Extensions;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using Profiles.Api.Core.Abstractions;
 using Profiles.Api.DataPersistence.Context;
 using Profiles.Api.DataPersistence.Factories;
@@ -12,7 +14,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDataPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ProfileDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("ProfilesDB")));
+        services.AddDatabaseContext<ProfileDbContext>(configuration, "ProfilesDB");
 
         return services
             .AddRepositories()

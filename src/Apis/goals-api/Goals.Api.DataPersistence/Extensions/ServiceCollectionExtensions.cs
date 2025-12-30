@@ -1,7 +1,9 @@
 using Goals.Api.Core.Abstractions.Repositories;
 using Goals.Api.DataPersistence.Context;
 using Goals.Api.DataPersistence.Repositories;
-using Microsoft.EntityFrameworkCore;
+
+using Libraries.DataInfrastructure.Extensions;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +13,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddDataPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<GoalsDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("GoalsDB")));
+        services.AddDatabaseContext<GoalsDbContext>(configuration, "GoalsDB");
 
         services.AddRepositories();
 

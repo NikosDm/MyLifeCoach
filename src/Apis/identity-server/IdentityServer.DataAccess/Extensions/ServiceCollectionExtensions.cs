@@ -1,8 +1,9 @@
-using System;
 using IdentityServer.DataAccess.Context;
 using IdentityServer.DataAccess.Entities;
+
+using Libraries.DataInfrastructure.Extensions;
+
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,8 +13,7 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddIdentityDb(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<UsersDbContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("IdentityDB")));
+        services.AddDatabaseContext<UsersDbContext>(configuration, "IdentityDB");
 
         services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
