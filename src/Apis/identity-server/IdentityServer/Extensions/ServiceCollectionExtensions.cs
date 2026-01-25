@@ -19,7 +19,7 @@ public static class ServiceCollectionExtensions
 
         services
             .AddIdentityServerCore()
-            .AddIdentityDb(configuration)
+            .AddIdentityConfiguration(configuration)
             .AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
