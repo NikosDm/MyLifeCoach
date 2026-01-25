@@ -4,7 +4,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
+
 using Libraries.DataInfrastructure.Enums;
 using Libraries.Common.Entities;
 using Libraries.Common.Abstractions;
@@ -20,7 +22,7 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
     private readonly TimeProvider _timeProvider = TimeProvider.System;
     private readonly IUserContext _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
 
-    public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken token = default)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken token = default)
     {
         SetAuditValues(entity, AuditAction.Create);
         var addedEntity = await Entities.AddAsync(entity, token);
