@@ -11,11 +11,12 @@ namespace IdentityServer.DataAccess.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddIdentityDb(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDatabaseContext<UsersDbContext>(configuration, "IdentityDB");
-
-        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
+        services
+            .AddDatabaseContext<UsersDbContext>(configuration, "IdentityDB")
+            .AddMessaging(configuration, "IdentityDB")
+            .AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequiredLength = 8;
