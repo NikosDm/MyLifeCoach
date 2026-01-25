@@ -7,50 +7,73 @@ using IdentityModel;
 using IdentityServer.Core.Abstractions;
 using IdentityServer.Core.Dtos.Requests;
 using IdentityServer.Core.Dtos.Responses;
+using IdentityServer.Core.Extensions;
+using IdentityServer.DataAccess.Context;
 using IdentityServer.DataAccess.Entities;
 
 using Libraries.Common.Constants;
+using Libraries.DataInfrastructure.Abstractions;
 
 using Microsoft.AspNetCore.Identity;
 
 namespace IdentityServer.Core.Services;
 
 internal sealed class AccountService(
+    UsersDbContext dbContext,
     UserManager<ApplicationUser> userManager,
-    SignInManager<ApplicationUser> signInManager) : IAccountService
+    SignInManager<ApplicationUser> signInManager,
+    IMessageDispatcher messageDispatcher) : IAccountService
 {
+    private readonly UsersDbContext _dbContext = dbContext
+        ?? throw new ArgumentNullException(nameof(dbContext));
     private readonly UserManager<ApplicationUser> _userManager = userManager
         ?? throw new ArgumentNullException(nameof(userManager));
     private readonly SignInManager<ApplicationUser> _signInManager = signInManager
         ?? throw new ArgumentNullException(nameof(signInManager));
+    private readonly IMessageDispatcher _messageDispatcher = messageDispatcher
+        ?? throw new ArgumentNullException(nameof(messageDispatcher));
 
     public async Task<RegisterResponse> CreateAsync(CreateUserRequest request)
     {
         var user = new ApplicationUser
         {
             UserName = request.Username,
+            FullName = request.FullName,
             Email = request.Email,
             EmailConfirmed = true, // Default to true for now,
-            IsActive = true,
-            IsPendingVerification = true,
+            IsActive = false // New users are inactive by default and require admin activation
         };
 
-        var result = await _userManager.CreateAsync(user, request.Password);
+        await using var transaction = await _messageDispatcher.BeginTransactionAsync(_dbContext.Database);
+        var result = new RegisterResponse(null, IdentityResult.Failed());
 
-        if (result.Succeeded)
+        try
         {
-            await _userManager.AddToRoleAsync(user, SecurityConstants.USER_ROLE);
+            var createResult = await _userManager.CreateAsync(user, request.Password);
 
+            if (!createResult.Succeeded)
+            {
+                return new RegisterResponse(null, createResult);
+            }
+
+            await _userManager.AddToRoleAsync(user, SecurityConstants.USER_ROLE);
             await _userManager.AddClaimsAsync(user,
             [
                 new Claim(JwtClaimTypes.Name, request.FullName),
                 new Claim(JwtClaimTypes.Role, SecurityConstants.USER_ROLE),
-                new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString()),
-                new Claim(SecurityConstants.IS_PENDING_VERIFICATION, user.IsPendingVerification.ToString()),
+                new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString())
             ]);
-        }
 
-        return new RegisterResponse(new UserDto(user.Id, user.UserName, user.Email, user.FullName), result);
+            await _messageDispatcher.DispachAsync(user.ToUserCreatedMessage(request.FullName));
+            await transaction.CommitAsync();
+
+            return result with { User = new UserDto(user.Id, user.UserName, user.Email, request.FullName), Result = createResult };
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            return result with { Result = IdentityResult.Failed() };
+        }
     }
 
     public async Task<LoginResponse> LoginAsync(LoginUserRequest request)
@@ -59,12 +82,12 @@ internal sealed class AccountService(
 
         user ??= await _userManager.FindByNameAsync(request.Username);
 
-        if (user == null)
+        if (user is null)
         {
             return new LoginResponse(null, SignInResult.Failed);
         }
 
-        if (!user.IsActive || user.IsPendingVerification)
+        if (!user.IsActive)
         {
             return new LoginResponse(null, SignInResult.NotAllowed);
         }
