@@ -13,7 +13,6 @@ public static class ApplicationBuilderExtensions
 {
     public static WebApplication UseIdentityServerPipeline(this WebApplication app)
     {
-        app.UseCors();
         app.UseSerilogRequestLogging();
 
         if (app.Environment.IsDevelopment())
@@ -23,6 +22,8 @@ public static class ApplicationBuilderExtensions
 
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors("AllowSPA");
+        app.UseAuthentication();
         app.UseIdentityServer();
         app.UseAuthorization();
 
