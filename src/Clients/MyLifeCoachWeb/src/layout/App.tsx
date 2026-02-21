@@ -10,7 +10,7 @@ import { Box, CircularProgress } from "@mui/material";
 import NavBar from "./NavBar";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import RootPage from "../pages/root/rootPage";
+import RootPage from "../pages/root/RootPage";
 
 export default function App() {
   const { isLoading } = useAuth();
