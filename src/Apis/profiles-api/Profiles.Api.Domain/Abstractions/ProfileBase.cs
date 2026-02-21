@@ -10,6 +10,7 @@ namespace Profiles.Api.Domain.Abstractions;
 public abstract class ProfileBase : BaseEntity
 {
     public Guid UserId { get; set; }
+    public bool IsActive { get; set; }
 
     [NotMapped]
     public ProfileType Type { get; protected set; }
