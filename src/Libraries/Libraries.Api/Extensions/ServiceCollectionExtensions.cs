@@ -19,7 +19,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddHttpUserContext(this IServiceCollection services)
     {
         services.AddHttpContextAccessor();
-        services.AddScoped<IUserContext, HttptUserContext>();
+        services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
+        services.AddScoped<IUserContext, UserContext>();
         return services;
     }
 

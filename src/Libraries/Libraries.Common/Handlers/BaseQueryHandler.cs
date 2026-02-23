@@ -24,7 +24,7 @@ public abstract class BaseQueryHandler<TQuery, TResponse>(ILogger logger)
         var timer = new Stopwatch();
         timer.Start();
 
-        var response = await Execute(query, token);
+        var response = await ExecuteAsync(query, token);
 
         var timeTaken = timer.Elapsed;
         if (timeTaken.Seconds > 5)
@@ -37,5 +37,5 @@ public abstract class BaseQueryHandler<TQuery, TResponse>(ILogger logger)
         return response;
     }
 
-    public abstract Task<TResponse> Execute(TQuery query, CancellationToken token = default);
+    public abstract Task<TResponse> ExecuteAsync(TQuery query, CancellationToken token = default);
 }

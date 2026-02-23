@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Libraries.Common.Abstractions.Commands;
 
-public interface ICommandHandler<in TCommand, TResponse> 
+public interface ICommandHandler<in TCommand, TResponse>
     where TCommand : ICommand<TResponse>
 {
-    Task<TResponse> Handle(TCommand command, CancellationToken token = default);
+    Task<TResponse> HandleAsync(TCommand command, CancellationToken token = default);
 }
