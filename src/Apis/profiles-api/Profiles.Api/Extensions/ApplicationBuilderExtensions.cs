@@ -1,4 +1,7 @@
+using HealthChecks.UI.Client;
+
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +23,10 @@ public static class ApplicationBuilderExtensions
 
     public static void UseApiEndpoints(this WebApplication app)
     {
+        app.MapHealthChecks("/health", new HealthCheckOptions
+        {
+            ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+        }).AllowAnonymous();
         app.MapPersonalProfileEndpoints();
         app.MapFinancialProfileEndpoints();
         app.MapFitnessProfileEndpoints();

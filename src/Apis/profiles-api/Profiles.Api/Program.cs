@@ -1,4 +1,5 @@
 using Libraries.Api.Extensions;
+using Libraries.Api.Middleware;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
@@ -31,12 +32,14 @@ app.UseSwaggerUI();
 
 app.UseMigration();
 
+app.UseExceptionHandler(o => { });
+
 app.UseAuthentication();
+
+app.UseMiddleware<UserContextMiddleware>();
 
 app.UseAuthorization();
 
 app.UseApiEndpoints();
-
-app.UseApiServices();
 
 app.Run();

@@ -5,6 +5,7 @@ using Goals.Api.Extensions;
 using Libraries.Api.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using Libraries.Api.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +30,14 @@ app.UseSwaggerUI();
 
 app.UseMigration();
 
+app.UseExceptionHandler(o => { });
+
 app.UseAuthentication();
+
+app.UseMiddleware<UserContextMiddleware>();
 
 app.UseAuthorization();
 
 app.UseApiEndpoints();
-
-app.UseApiServices();
 
 app.Run();
