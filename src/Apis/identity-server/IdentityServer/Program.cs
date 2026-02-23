@@ -23,9 +23,9 @@ builder.Services.AddIdentityServerServices(builder.Configuration);
 var app = builder
     .Build();
 
-app.UseIdentityServerPipeline();
-
 app.UseMigration();
+
+app.UseIdentityServerPipeline();
 
 SeedData.EnsureSeedData(app);
 

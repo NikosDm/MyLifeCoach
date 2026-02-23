@@ -28,8 +28,8 @@ public static class ApplicationBuilderExtensions
         app.UseRouting();
         app.UseCors("AllowSPA");
         app.UseAuthentication();
-        app.UseMiddleware<UserContextMiddleware>();
         app.UseIdentityServer();
+        app.UseMiddleware<UserContextMiddleware>();
         app.UseAuthorization();
 
         app.MapRazorPages()

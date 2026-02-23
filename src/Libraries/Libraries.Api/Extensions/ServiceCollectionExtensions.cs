@@ -5,6 +5,7 @@ using Libraries.Common.Abstractions;
 using Libraries.Api.Context;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Libraries.Api.Middleware;
 
 namespace Libraries.Api.Extensions;
 
@@ -18,6 +19,7 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddHttpUserContext(this IServiceCollection services)
     {
+        services.AddTransient<UserContextMiddleware>();
         services.AddHttpContextAccessor();
         services.AddSingleton<IUserContextAccessor, UserContextAccessor>();
         services.AddScoped<IUserContext, UserContext>();
