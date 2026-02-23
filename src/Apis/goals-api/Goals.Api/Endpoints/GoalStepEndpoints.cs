@@ -30,7 +30,7 @@ public static class GoalStepEndpoints
             IQueryHandler<GetGoalStepByIdQuery, GoalStepResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetGoalStepByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetGoalStepByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .WithName("GetGoalStepById")
@@ -46,7 +46,7 @@ public static class GoalStepEndpoints
             ICommandHandler<UpdateGoalStepCommand, GoalStepResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateGoalStepCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateGoalStepCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .WithName("UpdateGoalStep")
@@ -62,7 +62,7 @@ public static class GoalStepEndpoints
             ICommandHandler<DeleteGoalStepCommand, Guid> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new DeleteGoalStepCommand(id), token);
+            var result = await handler.HandleAsync(new DeleteGoalStepCommand(id), token);
             return TypedResults.Ok(result);
         })
         .WithName("DeleteGoalStep")

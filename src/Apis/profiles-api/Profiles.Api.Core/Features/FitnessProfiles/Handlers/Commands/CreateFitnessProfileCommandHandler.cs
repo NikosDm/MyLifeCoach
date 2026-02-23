@@ -31,7 +31,7 @@ internal sealed class CreateFitnessProfileCommandHandler(
     private readonly IValidator<CreateFitnessProfileRequest> _validator = validator
         ?? throw new ArgumentNullException(nameof(validator));
 
-    public override async Task<FitnessProfileResponse> Execute(CreateFitnessProfileCommand command, CancellationToken token = default)
+    public override async Task<FitnessProfileResponse> ExecuteAsync(CreateFitnessProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);

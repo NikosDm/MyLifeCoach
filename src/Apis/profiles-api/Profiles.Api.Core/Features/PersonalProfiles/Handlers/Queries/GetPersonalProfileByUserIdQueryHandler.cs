@@ -21,7 +21,7 @@ internal sealed class GetPersonalProfileByUserIdQueryHandler(
     : BaseQueryHandler<GetPersonalProfileByUserIdQuery, PersonalProfileResponse>(logger),
     IQueryHandler<GetPersonalProfileByUserIdQuery, PersonalProfileResponse>
 {
-    public override async Task<PersonalProfileResponse> Execute(GetPersonalProfileByUserIdQuery query, CancellationToken token = default)
+    public override async Task<PersonalProfileResponse> ExecuteAsync(GetPersonalProfileByUserIdQuery query, CancellationToken token = default)
     {
         var repository = profileRepositoryFactory.Get<PersonalProfile>(ProfileType.PERSONAL);
 

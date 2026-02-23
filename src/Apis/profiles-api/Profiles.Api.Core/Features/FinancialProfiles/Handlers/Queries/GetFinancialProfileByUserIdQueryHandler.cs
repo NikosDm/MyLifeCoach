@@ -25,7 +25,7 @@ internal sealed class GetFinancialProfileByUserIdQueryHandler(
     private readonly IProfileRepositoryFactory _profileRepositoryFactory = profileRepositoryFactory
         ?? throw new ArgumentNullException(nameof(profileRepositoryFactory));
 
-    public override async Task<FinancialProfileResponse> Execute(GetFinancialProfileByUserIdQuery query, CancellationToken token = default)
+    public override async Task<FinancialProfileResponse> ExecuteAsync(GetFinancialProfileByUserIdQuery query, CancellationToken token = default)
     {
         var repository = _profileRepositoryFactory.Get<FinancialProfile>(ProfileType.FINANCIAL);
 

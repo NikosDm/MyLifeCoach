@@ -1,13 +1,16 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Goals.Api.Core.Abstractions.Repositories;
 using Goals.Api.Core.Features.GoalSteps.Requests.Commands;
 using Goals.Api.Domain.Entities;
 using Goals.Api.Domain.Enums;
+
 using Libraries.Common.Abstractions.Commands;
 using Libraries.Common.Exceptions;
 using Libraries.Common.Handlers;
+
 using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalSteps.Handlers.Commands;
@@ -20,7 +23,7 @@ internal sealed class DeleteGoalStepCommandHandler(
     private readonly IGoalStepRepository _goalStepRepository = goalStepRepository
         ?? throw new ArgumentNullException(nameof(goalStepRepository));
 
-    public override async Task<Guid> Execute(DeleteGoalStepCommand command, CancellationToken token = default)
+    public override async Task<Guid> ExecuteAsync(DeleteGoalStepCommand command, CancellationToken token = default)
     {
         var goalStepId = command.Id;
 

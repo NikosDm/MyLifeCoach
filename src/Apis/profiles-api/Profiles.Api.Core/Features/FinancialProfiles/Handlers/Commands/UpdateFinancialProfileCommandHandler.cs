@@ -30,7 +30,7 @@ internal sealed class UpdateFinancialProfileCommandHandler(
     private readonly IValidator<UpdateFinancialProfileRequest> _validator = validator
         ?? throw new System.ArgumentNullException(nameof(validator));
 
-    public override async Task<FinancialProfileResponse> Execute(UpdateFinancialProfileCommand command, CancellationToken token = default)
+    public override async Task<FinancialProfileResponse> ExecuteAsync(UpdateFinancialProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);

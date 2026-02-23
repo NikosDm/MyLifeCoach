@@ -34,7 +34,7 @@ public static class FinancialProfileEndpoints
             CancellationToken token = default) =>
         {
             var userId = userContext.UserId ?? throw new InvalidUserContextException(ApiErrorLiterals.InvalidUserContext);
-            var result = await handler.Handle(new GetFinancialProfileByUserIdQuery(userId), token);
+            var result = await handler.HandleAsync(new GetFinancialProfileByUserIdQuery(userId), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)
@@ -50,7 +50,7 @@ public static class FinancialProfileEndpoints
             IQueryHandler<GetFinancialProfileByIdQuery, FinancialProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetFinancialProfileByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetFinancialProfileByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -66,7 +66,7 @@ public static class FinancialProfileEndpoints
             ICommandHandler<CreateFinancialProfileCommand, FinancialProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateFinancialProfileCommand(request), token);
+            var result = await handler.HandleAsync(new CreateFinancialProfileCommand(request), token);
             return TypedResults.Created($"{RouteConstants.PersonalProfileApiPrefix}/{result.ProfileId}", new { result.ProfileId });
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -83,7 +83,7 @@ public static class FinancialProfileEndpoints
             ICommandHandler<UpdateFinancialProfileCommand, FinancialProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateFinancialProfileCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateFinancialProfileCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)

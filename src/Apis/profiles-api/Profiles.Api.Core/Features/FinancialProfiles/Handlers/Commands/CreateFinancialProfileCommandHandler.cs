@@ -31,7 +31,7 @@ internal sealed class CreateFinancialProfileCommandHandler(
     private readonly IValidator<CreateFinancialProfileRequest> _validator = validator
         ?? throw new System.ArgumentNullException(nameof(validator));
 
-    public override async Task<FinancialProfileResponse> Execute(CreateFinancialProfileCommand command, CancellationToken token = default)
+    public override async Task<FinancialProfileResponse> ExecuteAsync(CreateFinancialProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);

@@ -34,7 +34,7 @@ public static class FitnessProfileEndpoints
             CancellationToken token = default) =>
         {
             var userId = userContext.UserId ?? throw new InvalidUserContextException(ApiErrorLiterals.InvalidUserContext);
-            var result = await handler.Handle(new GetFitnessProfileByUserIdQuery(userId), token);
+            var result = await handler.HandleAsync(new GetFitnessProfileByUserIdQuery(userId), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)
@@ -50,7 +50,7 @@ public static class FitnessProfileEndpoints
             IQueryHandler<GetFitnessProfileByIdQuery, FitnessProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetFitnessProfileByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetFitnessProfileByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -66,7 +66,7 @@ public static class FitnessProfileEndpoints
             ICommandHandler<CreateFitnessProfileCommand, FitnessProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateFitnessProfileCommand(request), token);
+            var result = await handler.HandleAsync(new CreateFitnessProfileCommand(request), token);
             return TypedResults.Created($"{RouteConstants.PersonalProfileApiPrefix}/{result.ProfileId}", new { result.ProfileId });
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -83,7 +83,7 @@ public static class FitnessProfileEndpoints
             ICommandHandler<UpdateFitnessProfileCommand, FitnessProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateFitnessProfileCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateFitnessProfileCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)

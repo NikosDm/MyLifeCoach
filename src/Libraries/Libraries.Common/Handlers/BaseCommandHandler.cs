@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Libraries.Common.Abstractions.Commands;
+
 using Microsoft.Extensions.Logging;
 
 namespace Libraries.Common.Handlers;
@@ -14,7 +16,7 @@ public abstract class BaseCommandHandler<TCommand, TResponse>(ILogger<BaseComman
 {
     private readonly ILogger<BaseCommandHandler<TCommand, TResponse>> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-    public async Task<TResponse> Handle(TCommand command, CancellationToken token = default)
+    public async Task<TResponse> HandleAsync(TCommand command, CancellationToken token = default)
     {
         _logger.LogInformation("[START] Handle Command={Request} - Response={Response} - RequestData={RequestData}",
             typeof(TCommand).Name, typeof(TResponse).Name, command);
@@ -22,7 +24,7 @@ public abstract class BaseCommandHandler<TCommand, TResponse>(ILogger<BaseComman
         var timer = new Stopwatch();
         timer.Start();
 
-        var response = await Execute(command, token);
+        var response = await ExecuteAsync(command, token);
 
         var timeTaken = timer.Elapsed;
         if (timeTaken.Seconds > 5)
@@ -35,5 +37,5 @@ public abstract class BaseCommandHandler<TCommand, TResponse>(ILogger<BaseComman
         return response;
     }
 
-    public abstract Task<TResponse> Execute(TCommand command, CancellationToken token = default);
+    public abstract Task<TResponse> ExecuteAsync(TCommand command, CancellationToken token = default);
 }

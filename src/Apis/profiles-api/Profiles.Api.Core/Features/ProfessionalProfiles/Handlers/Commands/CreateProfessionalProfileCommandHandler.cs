@@ -31,7 +31,7 @@ internal sealed class CreateProfessionalProfileCommandHandler(
     private readonly IValidator<CreateProfessionalProfileRequest> _validator = validator
         ?? throw new System.ArgumentNullException(nameof(validator));
 
-    public override async Task<ProfessionalProfileResponse> Execute(CreateProfessionalProfileCommand command, CancellationToken token = default)
+    public override async Task<ProfessionalProfileResponse> ExecuteAsync(CreateProfessionalProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
 

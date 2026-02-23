@@ -33,7 +33,7 @@ public static class ProfessionalProfileEndpoints
             CancellationToken token = default) =>
         {
             var userId = userContext.UserId ?? throw new InvalidUserContextException(ApiErrorLiterals.InvalidUserContext);
-            var result = await handler.Handle(new GetProfessionalProfileByUserIdQuery(userId), token);
+            var result = await handler.HandleAsync(new GetProfessionalProfileByUserIdQuery(userId), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)
@@ -49,7 +49,7 @@ public static class ProfessionalProfileEndpoints
             IQueryHandler<GetProfessionalProfileByIdQuery, ProfessionalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetProfessionalProfileByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetProfessionalProfileByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -65,7 +65,7 @@ public static class ProfessionalProfileEndpoints
             ICommandHandler<CreateProfessionalProfileCommand, ProfessionalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateProfessionalProfileCommand(request), token);
+            var result = await handler.HandleAsync(new CreateProfessionalProfileCommand(request), token);
             return TypedResults.Created($"{RouteConstants.PersonalProfileApiPrefix}/{result.ProfileId}", new { result.ProfileId });
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -82,7 +82,7 @@ public static class ProfessionalProfileEndpoints
             ICommandHandler<UpdateProfessionalProfileCommand, ProfessionalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateProfessionalProfileCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateProfessionalProfileCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)

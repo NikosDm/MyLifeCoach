@@ -24,7 +24,7 @@ internal sealed class UpdatePersonalProfileCommandHandler(
     ILogger<UpdatePersonalProfileCommandHandler> logger)
 : BaseCommandHandler<UpdatePersonalProfileCommand, PersonalProfileResponse>(logger), ICommandHandler<UpdatePersonalProfileCommand, PersonalProfileResponse>
 {
-    public override async Task<PersonalProfileResponse> Execute(UpdatePersonalProfileCommand command, CancellationToken token = default)
+    public override async Task<PersonalProfileResponse> ExecuteAsync(UpdatePersonalProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await validator.ValidateAndThrowAsync(request, token);

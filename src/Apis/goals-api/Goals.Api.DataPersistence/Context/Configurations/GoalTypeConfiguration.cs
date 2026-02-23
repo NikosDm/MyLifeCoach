@@ -1,4 +1,5 @@
 using Goals.Api.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +10,9 @@ internal sealed class GoalTypeConfiguration : IEntityTypeConfiguration<GoalType>
     public void Configure(EntityTypeBuilder<GoalType> builder)
     {
         builder.HasKey(x => x.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedNever();
 
         builder.ComplexProperty(
             o => o.Name, nameBuilder =>

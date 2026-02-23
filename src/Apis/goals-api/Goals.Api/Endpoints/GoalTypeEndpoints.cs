@@ -30,7 +30,7 @@ public static class GoalTypeEndpoints
             IQueryHandler<GetGoalTypesQuery, IReadOnlyList<GoalTypeResponse>> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetGoalTypesQuery(), token);
+            var result = await handler.HandleAsync(new GetGoalTypesQuery(), token);
             return TypedResults.Ok(result);
         })
         .WithName("GetGoalTypes")
@@ -44,7 +44,7 @@ public static class GoalTypeEndpoints
             IQueryHandler<GetGoalTypeQuery, GoalTypeResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetGoalTypeQuery(id), token);
+            var result = await handler.HandleAsync(new GetGoalTypeQuery(id), token);
             return TypedResults.Ok(result);
         })
         .WithName("GetGoalTypeById")
@@ -59,7 +59,7 @@ public static class GoalTypeEndpoints
             ICommandHandler<CreateGoalTypeCommand, GoalTypeResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateGoalTypeCommand(request), token);
+            var result = await handler.HandleAsync(new CreateGoalTypeCommand(request), token);
             return TypedResults.Created($"{RouteConstants.GoalTypesApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateGoalType")
@@ -75,7 +75,7 @@ public static class GoalTypeEndpoints
             ICommandHandler<UpdateGoalTypeCommand, GoalTypeResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateGoalTypeCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateGoalTypeCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .WithName("UpdateGoalType")
@@ -90,7 +90,7 @@ public static class GoalTypeEndpoints
             ICommandHandler<DeactivateGoalTypeCommand, Guid> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new DeactivateGoalTypeCommand(id), token);
+            var result = await handler.HandleAsync(new DeactivateGoalTypeCommand(id), token);
             return TypedResults.Ok(result);
         })
         .WithName("DeactivateGoalType")

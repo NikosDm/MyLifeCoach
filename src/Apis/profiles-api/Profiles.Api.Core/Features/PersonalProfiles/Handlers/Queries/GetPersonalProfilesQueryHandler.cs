@@ -23,7 +23,7 @@ internal sealed class GetPersonalProfilesQueryHandler(
     : BaseQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>>(logger),
     IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>>
 {
-    public override async Task<IReadOnlyList<PersonalProfileResponse>> Execute(GetPersonalProfilesQuery query, CancellationToken token = default)
+    public override async Task<IReadOnlyList<PersonalProfileResponse>> ExecuteAsync(GetPersonalProfilesQuery query, CancellationToken token = default)
     {
         var repository = profileRepositoryFactory.Get<PersonalProfile>(ProfileType.PERSONAL);
 

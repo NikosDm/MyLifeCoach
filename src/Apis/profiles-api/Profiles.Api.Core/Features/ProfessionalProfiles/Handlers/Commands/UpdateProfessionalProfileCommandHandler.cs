@@ -30,7 +30,7 @@ internal sealed class UpdateProfessionalProfileCommandHandler(
     private readonly IValidator<UpdateProfessionalProfileRequest> _validator = validator
         ?? throw new System.ArgumentNullException(nameof(validator));
 
-    public override async Task<ProfessionalProfileResponse> Execute(UpdateProfessionalProfileCommand command, CancellationToken token = default)
+    public override async Task<ProfessionalProfileResponse> ExecuteAsync(UpdateProfessionalProfileCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);

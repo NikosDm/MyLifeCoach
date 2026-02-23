@@ -1,7 +1,9 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+
 using FluentValidation;
+
 using Goals.Api.Core.Abstractions.Repositories;
 using Goals.Api.Core.Dtos.GoalTypes.Requests;
 using Goals.Api.Core.Dtos.GoalTypes.Responses;
@@ -9,9 +11,11 @@ using Goals.Api.Core.Extensions;
 using Goals.Api.Core.Features.GoalTypes.Requests.Commands;
 using Goals.Api.Domain.Entities;
 using Goals.Api.Domain.ValueObjects;
+
 using Libraries.Common.Abstractions.Commands;
 using Libraries.Common.Exceptions;
 using Libraries.Common.Handlers;
+
 using Microsoft.Extensions.Logging;
 
 namespace Goals.Api.Core.Features.GoalTypes.Handlers.Commands;
@@ -19,7 +23,7 @@ namespace Goals.Api.Core.Features.GoalTypes.Handlers.Commands;
 internal sealed class UpdateGoalTypeCommandHandler(
     IGoalTypeRepository goalTypeRepository,
     IValidator<UpdateGoalTypeRequest> validator,
-    ILogger<UpdateGoalTypeCommandHandler> logger) 
+    ILogger<UpdateGoalTypeCommandHandler> logger)
     : BaseCommandHandler<UpdateGoalTypeCommand, GoalTypeResponse>(logger),
     ICommandHandler<UpdateGoalTypeCommand, GoalTypeResponse>
 {
@@ -27,7 +31,7 @@ internal sealed class UpdateGoalTypeCommandHandler(
 
     private readonly IValidator<UpdateGoalTypeRequest> _validator = validator ?? throw new ArgumentNullException(nameof(validator));
 
-    public override async Task<GoalTypeResponse> Execute(UpdateGoalTypeCommand command, CancellationToken token = default)
+    public override async Task<GoalTypeResponse> ExecuteAsync(UpdateGoalTypeCommand command, CancellationToken token = default)
     {
         var request = command.Request;
         await _validator.ValidateAndThrowAsync(request, token);

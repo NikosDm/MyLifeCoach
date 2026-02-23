@@ -32,7 +32,7 @@ public static class PersonalProfileEndpoints
             IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetPersonalProfilesQuery(), token);
+            var result = await handler.HandleAsync(new GetPersonalProfilesQuery(), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -48,7 +48,7 @@ public static class PersonalProfileEndpoints
             CancellationToken token = default) =>
         {
             var userId = userContext.UserId ?? throw new InvalidUserContextException(ApiErrorLiterals.InvalidUserContext);
-            var result = await handler.Handle(new GetPersonalProfileByUserIdQuery(userId), token);
+            var result = await handler.HandleAsync(new GetPersonalProfileByUserIdQuery(userId), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)
@@ -64,7 +64,7 @@ public static class PersonalProfileEndpoints
             IQueryHandler<GetPersonalProfileByIdQuery, PersonalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetPersonalProfileByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetPersonalProfileByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -80,7 +80,7 @@ public static class PersonalProfileEndpoints
             ICommandHandler<CreatePersonalProfileCommand, PersonalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreatePersonalProfileCommand(request), token);
+            var result = await handler.HandleAsync(new CreatePersonalProfileCommand(request), token);
             return TypedResults.Created($"{RouteConstants.PersonalProfileApiPrefix}/{result.ProfileId}", new { result.ProfileId });
         })
         .RequireAuthorization(ApiConstants.ProfileApiAdminPolicy)
@@ -97,7 +97,7 @@ public static class PersonalProfileEndpoints
             ICommandHandler<UpdatePersonalProfileCommand, PersonalProfileResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdatePersonalProfileCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdatePersonalProfileCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .RequireAuthorization(ApiConstants.ProfileApiUserPolicy)

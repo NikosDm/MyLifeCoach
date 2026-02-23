@@ -1,5 +1,6 @@
 using Goals.Api.Domain.Entities;
 using Goals.Api.Domain.ValueObjects;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,6 +11,9 @@ internal sealed class GoalConfiguration : IEntityTypeConfiguration<Goal>
     public void Configure(EntityTypeBuilder<Goal> builder)
     {
         builder.HasKey(x => x.Id);
+
+        builder.Property(e => e.Id)
+            .ValueGeneratedNever();
 
         builder.ComplexProperty(
             o => o.Name, nameBuilder =>
@@ -59,7 +63,7 @@ internal sealed class GoalConfiguration : IEntityTypeConfiguration<Goal>
         builder.Property(e => e.Status)
             .HasConversion<int>()
             .IsRequired();
-            
+
         builder.HasMany(e => e.Steps)
             .WithOne()
             .HasForeignKey(s => s.GoalId)

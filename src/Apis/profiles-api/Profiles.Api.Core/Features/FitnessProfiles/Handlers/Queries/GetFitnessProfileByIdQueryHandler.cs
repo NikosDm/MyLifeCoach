@@ -25,7 +25,7 @@ internal sealed class GetFitnessProfileByIdQueryHandler(
     private readonly IProfileRepositoryFactory _profileRepositoryFactory = profileRepositoryFactory
         ?? throw new ArgumentNullException(nameof(profileRepositoryFactory));
 
-    public override async Task<FitnessProfileResponse> Execute(GetFitnessProfileByIdQuery query, CancellationToken token = default)
+    public override async Task<FitnessProfileResponse> ExecuteAsync(GetFitnessProfileByIdQuery query, CancellationToken token = default)
     {
         var repository = _profileRepositoryFactory.Get<FitnessProfile>(ProfileType.FITNESS);
 

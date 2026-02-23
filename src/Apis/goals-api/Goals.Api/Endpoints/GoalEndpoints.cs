@@ -33,7 +33,7 @@ public static class GoalEndpoints
             IQueryHandler<GetGoalsQuery, IReadOnlyList<GoalResponse>> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetGoalsQuery(), token);
+            var result = await handler.HandleAsync(new GetGoalsQuery(), token);
             return TypedResults.Ok(result);
         })
         .WithName("GetGoals")
@@ -47,7 +47,7 @@ public static class GoalEndpoints
             IQueryHandler<GetGoalByIdQuery, GoalResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new GetGoalByIdQuery(id), token);
+            var result = await handler.HandleAsync(new GetGoalByIdQuery(id), token);
             return TypedResults.Ok(result);
         })
         .WithName("GetGoalById")
@@ -62,7 +62,7 @@ public static class GoalEndpoints
             ICommandHandler<CreateGoalCommand, GoalResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateGoalCommand(request), token);
+            var result = await handler.HandleAsync(new CreateGoalCommand(request), token);
             return TypedResults.Created($"{RouteConstants.GoalsApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateGoal")
@@ -78,7 +78,7 @@ public static class GoalEndpoints
             ICommandHandler<CreateGoalStepForGoalCommand, GoalStepResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new CreateGoalStepForGoalCommand(request.ToRequestForGoal(id)), token);
+            var result = await handler.HandleAsync(new CreateGoalStepForGoalCommand(request.ToRequestForGoal(id)), token);
             return TypedResults.Created($"{RouteConstants.GoalStepsApiPrefix}/{result.Id}", new { result.Id });
         })
         .WithName("CreateStepForGoal")
@@ -94,7 +94,7 @@ public static class GoalEndpoints
             ICommandHandler<UpdateGoalCommand, GoalResponse> handler,
             CancellationToken token = default) =>
         {
-            var result = await handler.Handle(new UpdateGoalCommand(id, request), token);
+            var result = await handler.HandleAsync(new UpdateGoalCommand(id, request), token);
             return TypedResults.Ok(result);
         })
         .WithName("UpdateGoal")

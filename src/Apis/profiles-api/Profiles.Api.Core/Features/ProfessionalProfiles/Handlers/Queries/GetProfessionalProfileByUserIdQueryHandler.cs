@@ -25,7 +25,7 @@ internal sealed class GetProfessionalProfileByUserIdQueryHandler(
     private readonly IProfileRepositoryFactory _profileRepositoryFactory = profileRepositoryFactory
         ?? throw new ArgumentNullException(nameof(profileRepositoryFactory));
 
-    public override async Task<ProfessionalProfileResponse> Execute(GetProfessionalProfileByUserIdQuery query, CancellationToken token = default)
+    public override async Task<ProfessionalProfileResponse> ExecuteAsync(GetProfessionalProfileByUserIdQuery query, CancellationToken token = default)
     {
         var repository = _profileRepositoryFactory.Get<ProfessionalProfile>(ProfileType.PROFESSIONAL);
 
