@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: IdentityServer Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/src/Apis/identity-server/IdentityServer/IdentityServer.csproj"
+        },
+        {
+            "name": "C#: Profiles.Api Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/src/Apis/profiles-api/Profiles.Api/Profiles.Api.csproj"
+        },
+        {
+            "name": "C#: Goals.Api Debug",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/src/Apis/goals-api/Goals.Api/Goals.Api.csproj"
+        }
+
+    ],
+    "compounds": [
+        {
+            "name": "C#: APIs Debug",
+            "configurations": ["C#: IdentityServer Debug", "C#: Profiles.Api Debug", "C#: Goals.Api Debug"],
+            "stopAll": true
+        }
+    ]
+}
