@@ -5,6 +5,8 @@ using IdentityServer.DataAccess.Entities;
 using IdentityServer.DataAccess.Extensions;
 using IdentityServer.Services;
 
+using Libraries.Api.Extensions;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,6 +38,7 @@ public static class ServiceCollectionExtensions
         });
 
         services
+            .AddHttpUserContext()
             .AddIdentityServerCore()
             .AddIdentityConfiguration(configuration)
             .AddIdentityServer(options =>

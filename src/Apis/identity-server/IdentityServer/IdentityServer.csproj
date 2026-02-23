@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Libraries\Libraries.Api\Libraries.Api.csproj" />
     <ProjectReference Include="..\IdentityServer.Core\IdentityServer.Core.csproj" />
   </ItemGroup>
 </Project>

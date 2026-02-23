@@ -9,7 +9,8 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddIdentityServerCore(this IServiceCollection services)
     {
-        services.AddScoped<IAccountService, AccountService>();
+        services
+            .AddScoped<IAccountService, AccountService>();
 
         return services;
     }

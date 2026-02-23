@@ -1,5 +1,7 @@
 using IdentityServer.DataAccess.Context;
 
+using Libraries.Api.Middleware;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,10 +22,13 @@ public static class ApplicationBuilderExtensions
             app.UseDeveloperExceptionPage();
         }
 
+        app.UseExceptionHandler(o => { });
+
         app.UseStaticFiles();
         app.UseRouting();
         app.UseCors("AllowSPA");
         app.UseAuthentication();
+        app.UseMiddleware<UserContextMiddleware>();
         app.UseIdentityServer();
         app.UseAuthorization();
 
