@@ -1,4 +1,5 @@
 using System;
+
 using Libraries.Common.Abstractions;
 using Libraries.Common.Constants;
 using Libraries.Common.Exceptions;
@@ -17,10 +18,7 @@ public sealed class GoalPeriod : IPeriod
     }
 
     public static GoalPeriod Of(DateTimeOffset startDate, DateTimeOffset? endDate)
-    {
-        if (endDate.HasValue && startDate > endDate)
-            throw new DomainException(ValidationErrorLiterals.InvalidGivenPeriod);
-
-        return new GoalPeriod(startDate, endDate);
-    }
+        => endDate.HasValue && startDate > endDate
+            ? throw new DomainException(ValidationErrorLiterals.InvalidGivenPeriod)
+            : new GoalPeriod(startDate, endDate);
 }
