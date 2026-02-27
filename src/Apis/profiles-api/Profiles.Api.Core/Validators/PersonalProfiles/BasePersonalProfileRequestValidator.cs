@@ -23,21 +23,9 @@ public abstract class BasePersonalProfileRequestValidator<T> : AbstractValidator
             .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(BasePersonalProfileRequest.FullName)));
 
         RuleFor(x => x.DateOfBirth)
-            .NotEmpty()
-            .NotNull()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(BasePersonalProfileRequest.DateOfBirth)))
             .Must(date => date < _timeProvider.GetUtcNow())
+            .When(x => x.DateOfBirth.HasValue)
             .WithMessage(string.Format(ValidationErrorLiterals.FutureDateNotAllowed, nameof(BasePersonalProfileRequest.DateOfBirth)));
-
-        RuleFor(x => x.City)
-            .NotEmpty()
-            .NotNull()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(BasePersonalProfileRequest.City)));
-
-        RuleFor(x => x.Country)
-            .NotEmpty()
-            .NotNull()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(BasePersonalProfileRequest.Country)));
 
         RuleFor(x => x.Email)
             .NotEmpty()
@@ -47,8 +35,8 @@ public abstract class BasePersonalProfileRequestValidator<T> : AbstractValidator
             .WithMessage(ValidationErrorLiterals.InvalidEmailAddressFormat);
 
         RuleFor(x => x.PhoneNumber)
-            .NotEmpty()
-            .NotNull()
-            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(BasePersonalProfileRequest.PhoneNumber)));
+            .Matches(@"^\+?[1-9]\d{1,14}$")
+            .When(x => !string.IsNullOrEmpty(x.PhoneNumber))
+            .WithMessage(ValidationErrorLiterals.InvalidPhoneNumberFormat);
     }
 }

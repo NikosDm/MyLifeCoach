@@ -6,8 +6,10 @@ using Profiles.Api.Core.Dtos.LanguageSkills.Requests;
 namespace Profiles.Api.Core.Dtos.PersonalProfiles.Requests;
 
 public sealed record CreatePersonalProfileRequest(
+    Guid UserId,
+    string Username,
     string FullName,
-    DateTimeOffset DateOfBirth,
+    DateTimeOffset? DateOfBirth,
     string City,
     string Country,
     string Email,

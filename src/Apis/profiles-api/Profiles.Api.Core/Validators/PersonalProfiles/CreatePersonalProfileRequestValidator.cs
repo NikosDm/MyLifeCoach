@@ -1,4 +1,8 @@
+using System.Data;
+
 using FluentValidation;
+
+using Libraries.Common.Constants;
 
 using Profiles.Api.Core.Dtos.LanguageSkills.Requests;
 using Profiles.Api.Core.Dtos.PersonalProfiles.Requests;
@@ -12,6 +16,11 @@ public sealed class CreatePersonalProfileRequestValidator
     public CreatePersonalProfileRequestValidator(IValidator<CreateLanguageSkillRequest> validator) : base()
     {
         _validator = validator;
+
+        RuleFor(x => x.Username)
+            .NotEmpty()
+            .NotNull()
+            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(CreatePersonalProfileRequest.Username)));
 
         RuleForEach(x => x.LanguageSkills)
               .SetValidator(_validator);

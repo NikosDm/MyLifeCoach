@@ -4,7 +4,7 @@ namespace Profiles.Api.Core.Dtos.PersonalProfiles.Requests;
 
 public sealed record UpdatePersonalProfileRequest(
     string FullName,
-    DateTimeOffset DateOfBirth,
+    DateTimeOffset? DateOfBirth,
     string City,
     string Country,
     string Email,
