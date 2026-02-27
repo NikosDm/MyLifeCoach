@@ -1,4 +1,4 @@
-namespace Libraries.Common.Messages;
+namespace Libraries.Common.Abstractions;
 
 public interface IMessage
 {
