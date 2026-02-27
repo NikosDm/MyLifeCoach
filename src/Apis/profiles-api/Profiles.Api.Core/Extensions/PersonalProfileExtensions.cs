@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+
+using Libraries.Common.Messages;
 
 using Profiles.Api.Core.Dtos.PersonalProfiles.Requests;
 using Profiles.Api.Core.Dtos.PersonalProfiles.Responses;
@@ -15,6 +18,7 @@ public static class PersonalProfileExtensions
             source.Id,
             source.UserId,
             source.Payload.FullName,
+            source.Payload.Username,
             source.Payload.DateOfBirth,
             source.Payload.City,
             source.Payload.Country,
@@ -28,8 +32,10 @@ public static class PersonalProfileExtensions
         => source is null ? null
         : new()
         {
+            UserId = source.UserId == Guid.Empty ? Guid.NewGuid() : source.UserId,
             Payload = new PersonalProfilePayload
             {
+                Username = source.Username,
                 FullName = source.FullName,
                 DateOfBirth = source.DateOfBirth,
                 City = source.City,
@@ -53,4 +59,17 @@ public static class PersonalProfileExtensions
         target.Payload.PhoneNumber = source.PhoneNumber;
         return target;
     }
+
+    public static CreatePersonalProfileRequest ToCreateRequest(this UserCreatedMessage source)
+        => source is null ? null
+        : new CreatePersonalProfileRequest(
+            source.Id,
+            source.Username,
+            source.FullName,
+            null,
+            null,
+            null,
+            source.Email,
+            null,
+            []);
 }
