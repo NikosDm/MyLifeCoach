@@ -14,4 +14,5 @@ public static class ValidationErrorLiterals
     public const string ParameterMustBePresent = "{0} must be present";
     public const string FutureDateNotAllowed = "{0} cannot be a future date";
     public const string MustBePercentage = "{0} must be between 0 and 100";
+    public const string InvalidPhoneNumberFormat = "Given phone number is not in a valid format. It should be in E.164 format, e.g., +1234567890";
 }
