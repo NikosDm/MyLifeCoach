@@ -1,5 +1,8 @@
 using System;
 
+using DotNetCore.CAP.Filter;
+
+using Libraries.Common.Options;
 using Libraries.DataInfrastructure.Abstractions;
 using Libraries.DataInfrastructure.Messages;
 
@@ -20,19 +23,56 @@ public static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
+    public static IServiceCollection AddMessaging<T>(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
+        where T : SubscribeFilter
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionStringName);
+        services
+            .AddOptions<CAPOptions>()
+            .BindConfiguration("CAPOptions")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
         services.AddScoped<IMessageDispatcher, MessageDispatcher>();
 
         services.AddCap(x =>
         {
+            var capOptions = configuration.GetSection("CAPOptions").Get<CAPOptions>();
+            x.DefaultGroupName = capOptions.DefaultGroupName;
             x.UsePostgreSql(configuration.GetConnectionString(connectionStringName));
             x.UseRabbitMQ(options =>
             {
-                options.HostName = configuration["RabbitMQ:HostName"];
-                options.UserName = configuration["RabbitMQ:UserName"];
-                options.Password = configuration["RabbitMQ:Password"];
+                options.HostName = capOptions.RabbitMQ.HostName;
+                options.UserName = capOptions.RabbitMQ.UserName;
+                options.Password = capOptions.RabbitMQ.Password;
+            });
+            x.UseDashboard();
+        }).AddSubscribeFilter<T>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddMessaging(this IServiceCollection services, IConfiguration configuration, string connectionStringName)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(connectionStringName);
+        services
+            .AddOptions<CAPOptions>()
+            .BindConfiguration("CAPOptions")
+            .ValidateDataAnnotations()
+            .ValidateOnStart();
+
+        services.AddScoped<IMessageDispatcher, MessageDispatcher>();
+
+        services.AddCap(x =>
+        {
+            var capOptions = configuration.GetSection("CAPOptions").Get<CAPOptions>();
+            x.DefaultGroupName = capOptions.DefaultGroupName;
+            x.UsePostgreSql(configuration.GetConnectionString(connectionStringName));
+            x.UseRabbitMQ(options =>
+            {
+                options.HostName = capOptions.RabbitMQ.HostName;
+                options.UserName = capOptions.RabbitMQ.UserName;
+                options.Password = capOptions.RabbitMQ.Password;
             });
             x.UseDashboard();
         });

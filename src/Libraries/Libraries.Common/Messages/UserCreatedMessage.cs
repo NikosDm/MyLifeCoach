@@ -1,5 +1,7 @@
 using System;
 
+using Libraries.Common.Abstractions;
+
 namespace Libraries.Common.Messages;
 
 public class UserCreatedMessage : IMessage
