@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -64,7 +65,14 @@ internal sealed class AccountService(
                 new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString())
             ]);
 
-            await _messageDispatcher.DispachAsync(user.ToUserCreatedMessage(request.FullName));
+            var headers = new Dictionary<string, string>
+            {
+                { MessageHeaderConstants.UserId, user.Id.ToString() },
+                { MessageHeaderConstants.Username, user.UserName },
+                { MessageHeaderConstants.Role, SecurityConstants.USER_ROLE }
+            };
+
+            await _messageDispatcher.DispachAsync(user.ToUserCreatedMessage(request.FullName), headers);
             await transaction.CommitAsync();
 
             return result with { User = new UserDto(user.Id, user.UserName, user.Email, request.FullName), Result = createResult };
