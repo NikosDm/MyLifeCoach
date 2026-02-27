@@ -14,6 +14,8 @@ public abstract class BaseEntity : IEntity<Guid>
 
     public void SetEntityId(Guid value)
     {
+        if (Id != Guid.Empty) return;
+
         if (value == Guid.Empty)
         {
             throw new DomainException("Entity Id value cannot be empty");
