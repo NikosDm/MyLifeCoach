@@ -12,7 +12,7 @@ using Profiles.Api.DataPersistence.Context;
 namespace Profiles.Api.DataPersistence.Migrations
 {
     [DbContext(typeof(ProfileDbContext))]
-    [Migration("20251123002753_InitialCreate")]
+    [Migration("20260223025746_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Profiles.Api.DataPersistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.11")
+                .HasAnnotation("ProductVersion", "9.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -28,7 +28,6 @@ namespace Profiles.Api.DataPersistence.Migrations
             modelBuilder.Entity("Profiles.Api.Domain.Models.FinancialProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -36,6 +35,9 @@ namespace Profiles.Api.DataPersistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -61,7 +63,6 @@ namespace Profiles.Api.DataPersistence.Migrations
             modelBuilder.Entity("Profiles.Api.Domain.Models.FitnessProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -69,6 +70,9 @@ namespace Profiles.Api.DataPersistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -94,7 +98,6 @@ namespace Profiles.Api.DataPersistence.Migrations
             modelBuilder.Entity("Profiles.Api.Domain.Models.PersonalProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -102,6 +105,9 @@ namespace Profiles.Api.DataPersistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -127,7 +133,6 @@ namespace Profiles.Api.DataPersistence.Migrations
             modelBuilder.Entity("Profiles.Api.Domain.Models.ProfessionalProfile", b =>
                 {
                     b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<DateTimeOffset>("CreatedAt")
@@ -135,6 +140,9 @@ namespace Profiles.Api.DataPersistence.Migrations
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uuid");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset>("LastUpdatedAt")
                         .HasColumnType("timestamp with time zone");
