@@ -15,6 +15,8 @@ internal class BaseProfileConfiguration<T> : IEntityTypeConfiguration<T>
         builder.Property(e => e.Id)
             .ValueGeneratedNever();
 
+        builder.Property(e => e.IsActive);
+
         builder.Property(e => e.UserId)
             .IsRequired();
 
