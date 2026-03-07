@@ -40,7 +40,7 @@ internal sealed class CreateProfessionalProfileCommandHandler(
         var repository = _profileRepositoryFactory.Get<ProfessionalProfile>(ProfileType.PROFESSIONAL);
 
         var entity = request.ToEntity();
-        var result = await repository.CreateAsync(entity, token);
+        var result = await repository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

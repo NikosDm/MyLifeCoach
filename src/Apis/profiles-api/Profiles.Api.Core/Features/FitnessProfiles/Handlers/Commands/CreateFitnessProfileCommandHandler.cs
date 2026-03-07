@@ -38,7 +38,7 @@ internal sealed class CreateFitnessProfileCommandHandler(
 
         var repository = _profileRepositoryFactory.Get<FitnessProfile>(ProfileType.FITNESS);
         var entity = request.ToEntity();
-        var result = await repository.CreateAsync(entity, token);
+        var result = await repository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

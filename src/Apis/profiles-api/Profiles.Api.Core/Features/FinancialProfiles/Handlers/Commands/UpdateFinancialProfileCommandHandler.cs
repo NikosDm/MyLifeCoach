@@ -38,7 +38,7 @@ internal sealed class UpdateFinancialProfileCommandHandler(
         var repository = profileRepositoryFactory.Get<FinancialProfile>(ProfileType.FINANCIAL);
         var profile = await repository.GetByIdAsync(command.Id, token);
         profile = request.MapRequestToEntity(profile);
-        var result = await repository.UpdateAsync(profile, token);
+        var result = await repository.UpdateAsync(profile, true, token);
 
         return result.ToResponse();
     }

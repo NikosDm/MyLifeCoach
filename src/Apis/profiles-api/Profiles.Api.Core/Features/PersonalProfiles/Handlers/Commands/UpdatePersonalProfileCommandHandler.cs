@@ -35,7 +35,7 @@ internal sealed class UpdatePersonalProfileCommandHandler(
 
         profile = request.MapRequestToEntity(profile);
 
-        var result = await repository.UpdateAsync(profile, token);
+        var result = await repository.UpdateAsync(profile, true, token);
 
         return result.ToResponse();
     }

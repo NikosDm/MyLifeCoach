@@ -32,7 +32,7 @@ internal sealed class CreatePersonalProfileCommandHandler(
         var repository = profileRepositoryFactory.Get<PersonalProfile>(ProfileType.PERSONAL);
 
         var entity = request.ToEntity();
-        var result = await repository.CreateAsync(entity, token);
+        var result = await repository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

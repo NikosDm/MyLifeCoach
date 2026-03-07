@@ -40,7 +40,7 @@ internal sealed class UpdateFitnessProfileCommandHandler(
         var entity = await repository.GetByIdAsync(command.Id, token);
         entity = request.MapRequestToEntity(entity);
 
-        var result = await repository.UpdateAsync(entity, token);
+        var result = await repository.UpdateAsync(entity, true, token);
         return result.ToResponse();
     }
 }

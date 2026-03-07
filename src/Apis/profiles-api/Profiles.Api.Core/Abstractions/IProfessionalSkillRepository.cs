@@ -13,6 +13,6 @@ public interface IProfessionalSkillRepository
     Task<IReadOnlyList<ProfessionalSkill>> GetAsync(CancellationToken token = default);
     Task<ProfessionalSkill> GetByIdAsync(Guid id, CancellationToken token = default);
     Task<IReadOnlyList<ProfessionalSkill>> SearchAsync(Expression<Func<ProfessionalSkill, bool>> options = null, CancellationToken token = default);
-    Task<ProfessionalSkill> CreateAsync(ProfessionalSkill entity, CancellationToken token = default);
-    Task<ProfessionalSkill> UpdateAsync(ProfessionalSkill entity, CancellationToken token = default);
+    Task<ProfessionalSkill> CreateAsync(ProfessionalSkill entity, bool saveChanges = true, CancellationToken token = default);
+    Task<ProfessionalSkill> UpdateAsync(ProfessionalSkill entity, bool saveChanges = true, CancellationToken token = default);
 }

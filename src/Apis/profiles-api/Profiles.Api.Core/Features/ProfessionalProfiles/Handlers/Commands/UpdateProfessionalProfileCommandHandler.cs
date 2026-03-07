@@ -38,7 +38,7 @@ internal sealed class UpdateProfessionalProfileCommandHandler(
         var repository = _profileRepositoryFactory.Get<ProfessionalProfile>(ProfileType.PROFESSIONAL);
         var profile = await repository.GetByIdAsync(command.Id, token);
         profile = request.MapRequestToEntity(profile);
-        var result = await repository.UpdateAsync(profile, token);
+        var result = await repository.UpdateAsync(profile, true, token);
 
         return result.ToResponse();
     }
