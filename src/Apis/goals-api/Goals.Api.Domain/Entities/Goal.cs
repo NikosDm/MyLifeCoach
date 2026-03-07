@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Goals.Api.Domain.Enums;
 using Goals.Api.Domain.ValueObjects;
+
 using Libraries.Common.Entities;
 
 namespace Goals.Api.Domain.Entities;
 
-public class Goal : BaseEntity
+public sealed class Goal : BaseEntity
 {
     private readonly List<GoalStep> _steps = [];
     public IReadOnlyList<GoalStep> Steps => _steps.AsReadOnly();

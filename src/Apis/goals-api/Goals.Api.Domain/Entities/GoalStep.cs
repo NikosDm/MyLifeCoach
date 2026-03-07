@@ -1,11 +1,13 @@
 using System;
+
 using Goals.Api.Domain.Enums;
 using Goals.Api.Domain.ValueObjects;
+
 using Libraries.Common.Entities;
 
 namespace Goals.Api.Domain.Entities;
 
-public class GoalStep : BaseEntity
+public sealed class GoalStep : BaseEntity
 {
     public Guid GoalId { get; private set; }
     public EntityName Name { get; private set; }

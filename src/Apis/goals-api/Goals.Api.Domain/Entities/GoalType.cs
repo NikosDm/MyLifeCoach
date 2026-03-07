@@ -1,9 +1,10 @@
 using Goals.Api.Domain.ValueObjects;
+
 using Libraries.Common.Entities;
 
 namespace Goals.Api.Domain.Entities;
 
-public class GoalType : BaseEntity
+public sealed class GoalType : BaseEntity
 {
     public EntityName Name { get; private set; }
     public string Description { get; private set; }
