@@ -20,5 +20,11 @@ internal sealed class FitnessProfileConfiguration : BaseProfileConfiguration<Fit
                 v => JsonSerializer.Serialize(v, null as JsonSerializerOptions),
                 v => JsonSerializer.Deserialize<FitnessProfilePayload>(v, null as JsonSerializerOptions))
             .IsRequired();
+
+        builder
+            .HasOne(e => e.User)
+            .WithOne(e => e.FitnessProfile)
+            .HasForeignKey<FitnessProfile>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

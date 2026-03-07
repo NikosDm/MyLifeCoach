@@ -24,5 +24,11 @@ internal sealed class PersonalProfileConfiguration : BaseProfileConfiguration<Pe
             .WithOne()
             .HasForeignKey(s => s.ProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasOne(e => e.User)
+            .WithOne(e => e.PersonalProfile)
+            .HasForeignKey<PersonalProfile>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

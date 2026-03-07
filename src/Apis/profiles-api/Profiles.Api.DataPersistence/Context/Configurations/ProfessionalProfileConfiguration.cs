@@ -24,5 +24,11 @@ internal sealed class ProfessionalProfileConfiguration : BaseProfileConfiguratio
             .WithOne()
             .HasForeignKey(s => s.ProfileId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder
+            .HasOne(e => e.User)
+            .WithOne(e => e.ProfessionalProfile)
+            .HasForeignKey<ProfessionalProfile>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

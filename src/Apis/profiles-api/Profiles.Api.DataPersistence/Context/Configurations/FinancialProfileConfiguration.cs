@@ -1,5 +1,6 @@
 using System.Text.Json;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using Profiles.Api.Domain.Models;
@@ -18,5 +19,11 @@ internal sealed class FinancialProfileConfiguration : BaseProfileConfiguration<F
                 v => JsonSerializer.Serialize(v, null as JsonSerializerOptions),
                 v => JsonSerializer.Deserialize<FinancialProfilePayload>(v, null as JsonSerializerOptions))
             .IsRequired();
+
+        builder
+            .HasOne(e => e.User)
+            .WithOne(e => e.FinancialProfile)
+            .HasForeignKey<FinancialProfile>(e => e.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
