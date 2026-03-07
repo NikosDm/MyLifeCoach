@@ -22,11 +22,12 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
     private readonly TimeProvider _timeProvider = TimeProvider.System;
     private readonly IUserContext _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
 
-    public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken token = default)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
         SetAuditValues(entity, AuditAction.Create);
         var addedEntity = await Entities.AddAsync(entity, token);
-        await StoreChangesAsync(token);
+        if (saveChanges)
+            await StoreChangesAsync(token);
 
         return addedEntity.Entity;
     }
@@ -51,13 +52,24 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
         return await query.Where(options).ToListAsync(token);
     }
 
-    public virtual async Task<TEntity> UpdateAsync(TEntity entity, CancellationToken token = default)
+    public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
         SetAuditValues(entity, AuditAction.Udpate);
-        await StoreChangesAsync(token);
+        if (saveChanges)
+            await StoreChangesAsync(token);
 
         return entity;
     }
+
+    public virtual async Task DeleteAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
+    {
+        Entities.Remove(entity);
+        if (saveChanges)
+            await StoreChangesAsync(token);
+    }
+
+    public async Task<bool> StoreChangesAsync(CancellationToken token = default)
+        => await _dbContext.SaveChangesAsync(token) > 0;
 
     private void SetAuditValues(TEntity entity, AuditAction auditAction)
     {
@@ -78,7 +90,4 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
                 break;
         }
     }
-
-    private async Task<bool> StoreChangesAsync(CancellationToken token = default)
-        => await _dbContext.SaveChangesAsync(token) > 0;
 }
