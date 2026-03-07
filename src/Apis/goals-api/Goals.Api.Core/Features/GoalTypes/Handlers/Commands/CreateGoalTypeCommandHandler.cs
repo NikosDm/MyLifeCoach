@@ -31,7 +31,7 @@ internal sealed class CreateGoalTypeCommandHandler(
         await _validator.ValidateAndThrowAsync(request, token);
 
         var entity = request.ToEntity();
-        var result = await _goalTypeRepository.CreateAsync(entity, token);
+        var result = await _goalTypeRepository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

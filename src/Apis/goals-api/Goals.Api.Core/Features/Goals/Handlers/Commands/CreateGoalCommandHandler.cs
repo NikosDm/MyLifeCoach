@@ -33,7 +33,7 @@ internal sealed class CreateGoalCommandHandler(
 
         var entity = request.ToEntity();
 
-        var result = await _goalRepository.CreateAsync(entity, token);
+        var result = await _goalRepository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

@@ -41,7 +41,7 @@ internal sealed class UpdateGoalTypeCommandHandler(
 
         goalType.Update(EntityName.Of(request.Name), request.Description, request.IsActive);
 
-        var result = await _goalTypeRepository.UpdateAsync(goalType, token);
+        var result = await _goalTypeRepository.UpdateAsync(goalType, true, token);
 
         return result.ToResponse();
     }

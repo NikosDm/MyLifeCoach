@@ -33,7 +33,7 @@ internal sealed class CreateGoalStepForGoalCommandHandler(
 
         var entity = request.ToEntity();
 
-        var result = await _goalStepRepository.CreateAsync(entity, token);
+        var result = await _goalStepRepository.CreateAsync(entity, true, token);
 
         return result.ToResponse();
     }

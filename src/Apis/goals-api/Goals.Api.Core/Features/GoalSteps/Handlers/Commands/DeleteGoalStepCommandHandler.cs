@@ -36,7 +36,7 @@ internal sealed class DeleteGoalStepCommandHandler(
         // send domain event which could be handled after Goal Step is 
         // updated on the database. For the moment this is not handled.
         goalStep.SetStatus(GoalStepStatus.Deleted);
-        var result = await _goalStepRepository.UpdateAsync(goalStep, token);
+        var result = await _goalStepRepository.UpdateAsync(goalStep, true, token);
 
         return result.Id;
     }

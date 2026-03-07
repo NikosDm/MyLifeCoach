@@ -46,7 +46,7 @@ internal sealed class UpdateGoalStepCommandHandler(
             Progress.Of(request.Progress),
             request.Status);
 
-        var result = await _goalStepRepository.UpdateAsync(goalStep, token);
+        var result = await _goalStepRepository.UpdateAsync(goalStep, true, token);
 
         return result.ToResponse();
     }

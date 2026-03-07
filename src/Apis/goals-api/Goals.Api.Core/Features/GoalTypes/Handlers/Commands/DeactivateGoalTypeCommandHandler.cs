@@ -33,7 +33,7 @@ internal sealed class DeactivateGoalTypeCommandHandler(
         }
 
         goalType.Deactivate();
-        var result = await _goalTypeRepository.UpdateAsync(goalType, token);
+        var result = await _goalTypeRepository.UpdateAsync(goalType, true, token);
 
         return result.Id;
     }

@@ -44,7 +44,7 @@ internal sealed class UpdateGoalCommandHandler(
             GoalPeriod.Of(request.StartDate, request.EndDate),
             request.Status);
 
-        var result = await _goalRepository.UpdateAsync(goal, token);
+        var result = await _goalRepository.UpdateAsync(goal, true, token);
 
         return result.ToResponse();
     }
