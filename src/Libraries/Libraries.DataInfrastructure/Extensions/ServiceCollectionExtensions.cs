@@ -4,9 +4,11 @@ using DotNetCore.CAP.Filter;
 
 using Libraries.Common.Options;
 using Libraries.DataInfrastructure.Abstractions;
+using Libraries.DataInfrastructure.Interceptors;
 using Libraries.DataInfrastructure.Messages;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,7 +20,12 @@ public static class ServiceCollectionExtensions
         where TContext : DbContext
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(connectionStringName);
-        services.AddDbContext<TContext>(options => options.UseNpgsql(configuration.GetConnectionString(connectionStringName)));
+        services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
+        services.AddDbContext<TContext>((sp, options) =>
+        {
+            options.AddInterceptors(sp.GetService<ISaveChangesInterceptor>());
+            options.UseNpgsql(configuration.GetConnectionString(connectionStringName));
+        });
 
         return services;
     }
