@@ -2,7 +2,6 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Libraries.Common.Abstractions;
 using Libraries.DataInfrastructure.Repositories;
 
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +13,8 @@ using Profiles.Api.Domain.Models;
 
 namespace Profiles.Api.DataPersistence.Repositories;
 
-internal sealed class ProfessionalProfileRepository(ProfileDbContext dbContext, IUserContext userContext)
-    : BaseEntityRepository<ProfessionalProfile, ProfileDbContext>(dbContext, userContext),
+internal sealed class ProfessionalProfileRepository(ProfileDbContext dbContext)
+    : BaseEntityRepository<ProfessionalProfile, ProfileDbContext>(dbContext),
     IProfileRepository<ProfessionalProfile>
 {
     public ProfileType Handles => ProfileType.PROFESSIONAL;

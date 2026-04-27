@@ -7,24 +7,19 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
-using Libraries.DataInfrastructure.Enums;
 using Libraries.Common.Entities;
-using Libraries.Common.Abstractions;
 
 namespace Libraries.DataInfrastructure.Repositories;
 
-public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext, IUserContext userContext)
+public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext)
     where TEntity : BaseEntity
     where TContext : DbContext
 {
     protected readonly DbSet<TEntity> Entities = dbContext.Set<TEntity>();
     private readonly TContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-    private readonly TimeProvider _timeProvider = TimeProvider.System;
-    private readonly IUserContext _userContext = userContext ?? throw new ArgumentNullException(nameof(userContext));
 
     public virtual async Task<TEntity> CreateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
-        SetAuditValues(entity, AuditAction.Create);
         var addedEntity = await Entities.AddAsync(entity, token);
         if (saveChanges)
             await StoreChangesAsync(token);
@@ -54,7 +49,6 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
 
     public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
-        SetAuditValues(entity, AuditAction.Udpate);
         if (saveChanges)
             await StoreChangesAsync(token);
 
@@ -70,24 +64,4 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
 
     public async Task<bool> StoreChangesAsync(CancellationToken token = default)
         => await _dbContext.SaveChangesAsync(token) > 0;
-
-    private void SetAuditValues(TEntity entity, AuditAction auditAction)
-    {
-        switch (auditAction)
-        {
-            case AuditAction.Create:
-                entity.SetEntityId(Guid.NewGuid());
-                entity.CreatedAt = _timeProvider.GetUtcNow();
-                entity.LastUpdatedAt = _timeProvider.GetUtcNow();
-                entity.CreatedBy = _userContext.UserId ?? Guid.Empty;
-                entity.LastUpdatedBy = _userContext.UserId ?? Guid.Empty;
-                break;
-            case AuditAction.Udpate:
-                entity.LastUpdatedAt = _timeProvider.GetUtcNow();
-                entity.LastUpdatedBy = _userContext.UserId ?? Guid.Empty;
-                break;
-            default:
-                break;
-        }
-    }
 }
