@@ -24,7 +24,7 @@ public static class GoalTypeEndpoints
         var group = app
             .MapGroup(RouteConstants.GoalTypesApiPrefix)
             .WithTags("Goal Types")
-            .RequireAuthorization(ApiConstants.GoalsApiUserPolicy);
+            .RequireAuthorization(ApiConstants.GoalsApiAdminPolicy);
 
         group.MapGet("/", async (
             IQueryHandler<GetGoalTypesQuery, IReadOnlyList<GoalTypeResponse>> handler,
