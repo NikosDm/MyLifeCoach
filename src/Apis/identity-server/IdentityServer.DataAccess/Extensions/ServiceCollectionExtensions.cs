@@ -6,6 +6,7 @@ using Libraries.DataInfrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityServer.DataAccess.Filters;
 
 namespace IdentityServer.DataAccess.Extensions;
 
@@ -15,7 +16,7 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddDatabaseContext<UsersDbContext>(configuration, "IdentityDB")
-            .AddMessaging(configuration, "IdentityDB")
+            .AddMessaging<IdentitySubscribeFilter>(configuration, "IdentityDB")
             .AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -30,3 +31,4 @@ public static class ServiceCollectionExtensions
         return services;
     }
 }
+
