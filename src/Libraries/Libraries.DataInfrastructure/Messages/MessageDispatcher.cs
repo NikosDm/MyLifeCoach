@@ -61,7 +61,7 @@ public class MessageDispatcher(ICapPublisher capPublisher, IUserContext userCont
     /// <param name="token"></param>
     /// <param name="additionalHeaders"></param>
     /// <returns></returns>
-    public async Task DispachAsync(IMessage message, Dictionary<string, string> additionalHeaders = null, CancellationToken token = default)
+    public async Task DispatchAsync(IMessage message, Dictionary<string, string> additionalHeaders = null, CancellationToken token = default)
     {
         if (message is null)
         {

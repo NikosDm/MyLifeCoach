@@ -14,7 +14,7 @@ namespace Libraries.DataInfrastructure.Abstractions;
 
 public interface IMessageDispatcher
 {
-    Task DispachAsync(IMessage message, Dictionary<string, string> additionalHeaders = null, CancellationToken token = default);
+    Task DispatchAsync(IMessage message, Dictionary<string, string> additionalHeaders = null, CancellationToken token = default);
     Task<IDbContextTransaction> BeginTransactionAsync(DatabaseFacade databaseFacade, CancellationToken token = default);
     ValueTask<ICapTransaction> BeginTransactionAsync(IDbConnection connection, CancellationToken token = default);
 }
