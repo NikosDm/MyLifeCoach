@@ -25,6 +25,7 @@ internal sealed class AccountService(
     SignInManager<ApplicationUser> signInManager,
     IMessageDispatcher messageDispatcher) : IAccountService
 {
+    private readonly TimeProvider _timeProvider = TimeProvider.System;
     private readonly UsersDbContext _dbContext = dbContext
         ?? throw new ArgumentNullException(nameof(dbContext));
     private readonly UserManager<ApplicationUser> _userManager = userManager
@@ -34,6 +35,15 @@ internal sealed class AccountService(
     private readonly IMessageDispatcher _messageDispatcher = messageDispatcher
         ?? throw new ArgumentNullException(nameof(messageDispatcher));
 
+    public async Task<IdentityResult> ChangeUserStatusAsync(Guid userId, bool isActive, DateTimeOffset? deactivationDate = null)
+    {
+        var user = await _userManager.FindByIdAsync(userId.ToString())
+            ?? throw new InvalidOperationException($"User with ID {userId} not found.");
+        user.IsActive = isActive;
+        user.DeactivationDate = isActive ? null : deactivationDate ?? _timeProvider.GetUtcNow();
+        return await _userManager.UpdateAsync(user);
+    }
+
     public async Task<RegisterResponse> CreateAsync(CreateUserRequest request)
     {
         var user = new ApplicationUser
@@ -42,7 +52,7 @@ internal sealed class AccountService(
             FullName = request.FullName,
             Email = request.Email,
             EmailConfirmed = true, // Default to true for now,
-            IsActive = false // New users are inactive by default and require admin activation
+            IsActive = request.IsActive
         };
 
         await using var transaction = await _messageDispatcher.BeginTransactionAsync(_dbContext.Database);
@@ -57,11 +67,11 @@ internal sealed class AccountService(
                 return new RegisterResponse(null, createResult);
             }
 
-            await _userManager.AddToRoleAsync(user, SecurityConstants.USER_ROLE);
+            await _userManager.AddToRoleAsync(user, request.Role);
             await _userManager.AddClaimsAsync(user,
             [
                 new Claim(JwtClaimTypes.Name, request.FullName),
-                new Claim(JwtClaimTypes.Role, SecurityConstants.USER_ROLE),
+                new Claim(JwtClaimTypes.Role, request.Role),
                 new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString())
             ]);
 
@@ -69,10 +79,10 @@ internal sealed class AccountService(
             {
                 { MessageHeaderConstants.UserId, user.Id.ToString() },
                 { MessageHeaderConstants.Username, user.UserName },
-                { MessageHeaderConstants.Role, SecurityConstants.USER_ROLE }
+                { MessageHeaderConstants.Role, request.Role }
             };
 
-            await _messageDispatcher.DispachAsync(user.ToUserCreatedMessage(request.FullName), headers);
+            await _messageDispatcher.DispatchAsync(user.ToUserCreatedMessage(request.FullName), headers);
             await transaction.CommitAsync();
 
             return result with { User = new UserDto(user.Id, user.UserName, user.Email, request.FullName), Result = createResult };
@@ -95,7 +105,7 @@ internal sealed class AccountService(
             return new LoginResponse(null, SignInResult.Failed);
         }
 
-        if (!user.IsActive)
+        if (!user.IsActive || user.DeactivationDate.HasValue)
         {
             return new LoginResponse(null, SignInResult.NotAllowed);
         }
