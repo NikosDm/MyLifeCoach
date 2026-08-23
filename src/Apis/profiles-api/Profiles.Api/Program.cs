@@ -22,6 +22,10 @@ builder.Services
 
 var app = builder.Build();
 
+app.UseMigration();
+
+app.UseExceptionHandler(o => { });
+
 app.UseCors(opt => opt
     .AllowAnyMethod()
     .AllowAnyHeader()
@@ -29,10 +33,6 @@ app.UseCors(opt => opt
 
 app.UseSwagger();
 app.UseSwaggerUI();
-
-app.UseMigration();
-
-app.UseExceptionHandler(o => { });
 
 app.UseAuthentication();
 
