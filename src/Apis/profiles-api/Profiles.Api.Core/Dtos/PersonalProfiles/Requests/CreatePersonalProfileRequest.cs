@@ -14,5 +14,8 @@ public sealed record CreatePersonalProfileRequest(
     string Country,
     string Email,
     string PhoneNumber,
-    IEnumerable<CreateLanguageSkillRequest> LanguageSkills)
+    IEnumerable<CreateLanguageSkillRequest> LanguageSkills,
+    bool InitialiseUser,
+    string Role,
+    bool IsActive)
     : BasePersonalProfileRequest(FullName, DateOfBirth, City, Country, Email, PhoneNumber);

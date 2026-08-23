@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@ namespace Profiles.Api.Core.Features.PersonalProfiles.Handlers.Commands;
 
 internal sealed class CreatePersonalProfileCommandHandler(
     IProfileRepositoryFactory profileRepositoryFactory,
+    IUserRepository userRepository,
     IValidator<CreatePersonalProfileRequest> validator,
     ILogger<CreatePersonalProfileCommandHandler> logger)
 : BaseCommandHandler<CreatePersonalProfileCommand, PersonalProfileResponse>(logger), ICommandHandler<CreatePersonalProfileCommand, PersonalProfileResponse>
@@ -30,6 +32,12 @@ internal sealed class CreatePersonalProfileCommandHandler(
         await validator.ValidateAndThrowAsync(request, token);
 
         var repository = profileRepositoryFactory.Get<PersonalProfile>(ProfileType.PERSONAL);
+
+        if (!request.InitialiseUser)
+        {
+            _ = await userRepository.GetByIdAsync(request.UserId, token)
+                ?? throw new InvalidOperationException($"Cannot create personal profile for UserId {request.UserId} as no corresponding user exists.");
+        }
 
         var entity = request.ToEntity();
         var result = await repository.CreateAsync(entity, true, token);

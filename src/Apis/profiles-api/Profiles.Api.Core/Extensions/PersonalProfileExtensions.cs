@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 
+using Libraries.Common.Constants;
 using Libraries.Common.Messages;
 
 using Profiles.Api.Core.Dtos.PersonalProfiles.Requests;
@@ -24,13 +25,28 @@ public static class PersonalProfileExtensions
             source.Payload.Country,
             source.Payload.Email,
             source.Payload.PhoneNumber,
+            source.User.Role,
+            source.User.IsActive,
             source.LanguageSkills is null ? []
             : source.LanguageSkills.Select(x => x.ToResponse())
         );
 
-    public static PersonalProfile ToEntity(this CreatePersonalProfileRequest source)
+    public static PersonalProfileListItemResponse ToListItemResponse(this PersonalProfile source)
         => source is null ? null
-        : new()
+        : new PersonalProfileListItemResponse(
+            source.Id,
+            source.UserId,
+            source.Payload.FullName,
+            source.Payload.Username,
+            source.Payload.Email,
+            source.User.IsActive,
+            source.User.DeactivationDate);
+
+    public static PersonalProfile ToEntity(this CreatePersonalProfileRequest source)
+    {
+        if (source is null) return null;
+
+        var profile = new PersonalProfile
         {
             UserId = source.UserId == Guid.Empty ? Guid.NewGuid() : source.UserId,
             Payload = new PersonalProfilePayload
@@ -46,6 +62,14 @@ public static class PersonalProfileExtensions
             LanguageSkills = source.LanguageSkills is null ? []
             : source.LanguageSkills.ToEntities()
         };
+
+        if (source.InitialiseUser)
+        {
+            profile.InitializeUser(source.Role, source.IsActive);
+        }
+
+        return profile;
+    }
 
     public static PersonalProfile MapRequestToEntity(this UpdatePersonalProfileRequest source, PersonalProfile target)
     {
@@ -71,5 +95,8 @@ public static class PersonalProfileExtensions
             null,
             source.Email,
             null,
-            []);
+            [],
+            true,
+            SecurityConstants.USER_ROLE,
+            false);
 }

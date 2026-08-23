@@ -20,15 +20,15 @@ namespace Profiles.Api.Core.Features.PersonalProfiles.Handlers.Queries;
 internal sealed class GetPersonalProfilesQueryHandler(
     IProfileRepositoryFactory profileRepositoryFactory,
     ILogger<GetPersonalProfilesQueryHandler> logger)
-    : BaseQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>>(logger),
-    IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>>
+    : BaseQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileListItemResponse>>(logger),
+    IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileListItemResponse>>
 {
-    public override async Task<IReadOnlyList<PersonalProfileResponse>> ExecuteAsync(GetPersonalProfilesQuery query, CancellationToken token = default)
+    public override async Task<IReadOnlyList<PersonalProfileListItemResponse>> ExecuteAsync(GetPersonalProfilesQuery query, CancellationToken token = default)
     {
         var repository = profileRepositoryFactory.Get<PersonalProfile>(ProfileType.PERSONAL);
 
         var result = await repository.GetAsync(token);
 
-        return [.. result.Select(x => x.ToResponse())];
+        return [.. result.Select(x => x.ToListItemResponse())];
     }
 }

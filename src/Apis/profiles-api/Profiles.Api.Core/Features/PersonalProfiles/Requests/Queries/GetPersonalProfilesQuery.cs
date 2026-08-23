@@ -6,4 +6,4 @@ using Profiles.Api.Core.Dtos.PersonalProfiles.Responses;
 
 namespace Profiles.Api.Core.Features.PersonalProfiles.Requests.Queries;
 
-public sealed record GetPersonalProfilesQuery : IQuery<IReadOnlyList<PersonalProfileResponse>>;
+public sealed record GetPersonalProfilesQuery : IQuery<IReadOnlyList<PersonalProfileListItemResponse>>;

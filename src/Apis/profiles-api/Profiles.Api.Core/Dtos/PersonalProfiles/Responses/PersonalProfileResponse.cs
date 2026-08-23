@@ -15,4 +15,6 @@ public sealed record PersonalProfileResponse(
     string Country,
     string Email,
     string PhoneNumber,
+    string Role,
+    bool IsActive,
     IEnumerable<LanguageSkillResponse> LanguageSkills);
