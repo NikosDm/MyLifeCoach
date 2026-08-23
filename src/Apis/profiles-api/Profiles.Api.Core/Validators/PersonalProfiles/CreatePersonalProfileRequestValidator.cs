@@ -1,5 +1,3 @@
-using System.Data;
-
 using FluentValidation;
 
 using Libraries.Common.Constants;
@@ -24,5 +22,12 @@ public sealed class CreatePersonalProfileRequestValidator
 
         RuleForEach(x => x.LanguageSkills)
               .SetValidator(_validator);
+
+        RuleFor(x => x.Role)
+            .NotEmpty()
+            .NotNull()
+            .When(x => x.InitialiseUser)
+            .Must(x => x.Equals(SecurityConstants.USER_ROLE) || x.Equals(SecurityConstants.ADMIN_ROLE))
+            .WithMessage(string.Format(ValidationErrorLiterals.NotEmptyParameter, nameof(CreatePersonalProfileRequest.Role)));
     }
 }
