@@ -6,15 +6,19 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
-import Root from "./core/root.tsx";
+import Router from "./router/Router.tsx";
+import { Provider } from "react-redux";
+import { store } from "./store.ts";
 
 const rootElement = document.getElementById("root");
 if (!rootElement) throw new Error("Failed to find the root element");
 
 createRoot(rootElement).render(
   <StrictMode>
-    <AuthProvider>
-      <Root />
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
+    </Provider>
   </StrictMode>,
 );
