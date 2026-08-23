@@ -2,6 +2,7 @@ import React, { createContext, useEffect, useState, useCallback } from "react";
 import { User } from "oidc-client-ts";
 import { userManager } from "../../auth/userManager";
 import type { AuthContextType } from "../../auth/types";
+import getUserClaimByName from "../../helpers/authHelpers";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -9,6 +10,8 @@ export { AuthContext };
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [isActive, setIsActive] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +30,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         userManager.events.addUserUnloaded(() => {
           setUser(null);
           setIsAuthenticated(false);
+          setRole(null);
+          setIsActive(false);
         });
 
         userManager.events.addAccessTokenExpiring(() => {
@@ -37,11 +42,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.warn("Access token expired");
           setUser(null);
           setIsAuthenticated(false);
+          setRole(null);
+          setIsActive(false);
         });
 
         userManager.events.addUserSignedOut(() => {
           setUser(null);
           setIsAuthenticated(false);
+          setRole(null);
+          setIsActive(false);
         });
 
         userManager.events.addSilentRenewError((error) => {
@@ -50,12 +59,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         // Check if user is already logged in
         const currentUser = await userManager.getUser();
+
         if (currentUser && !currentUser.expired) {
+          const userRole = getUserClaimByName<string | null>(
+            currentUser,
+            "role",
+          );
+          const isActive = getUserClaimByName<boolean | null>(
+            currentUser,
+            "is_active",
+          );
           setUser(currentUser);
           setIsAuthenticated(true);
+          setRole(userRole);
+          setIsActive(isActive || false);
         } else {
           setUser(null);
           setIsAuthenticated(false);
+          setRole(null);
+          setIsActive(false);
         }
       } catch (err) {
         const errorMessage =
@@ -104,11 +126,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const currentUser = await userManager.getUser();
       if (currentUser && !currentUser.expired) {
+        const userRole = getUserClaimByName<string | null>(currentUser, "role");
+        const isActive = getUserClaimByName<boolean | null>(
+          currentUser,
+          "is_active",
+        );
         setUser(currentUser);
+        setRole(userRole);
+        setIsActive(isActive || false);
         setIsAuthenticated(true);
       } else {
         setUser(null);
         setIsAuthenticated(false);
+        setRole(null);
       }
       setError(null);
     } catch (err) {
@@ -123,6 +153,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     user,
     isAuthenticated,
     isLoading,
+    role,
+    hasRole: (roleName: string) => role === roleName,
+    isActive,
     error,
     login,
     logout,

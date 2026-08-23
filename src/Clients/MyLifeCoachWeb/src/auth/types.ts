@@ -4,6 +4,9 @@ export interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
+  role: string | null;
+  hasRole: (role: string) => boolean;
+  isActive: boolean;
   error: string | null;
   login: () => Promise<void>;
   logout: () => Promise<void>;

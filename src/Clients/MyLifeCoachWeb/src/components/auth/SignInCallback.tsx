@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { userManager } from "../../auth/userManager";
-import { useAuth } from "../../auth/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { Box, CircularProgress, Alert } from "@mui/material";
 
 function SignInCallback() {
@@ -41,10 +41,10 @@ function SignInCallback() {
         setError(errorMessage);
         console.error("Sign-in callback error:", err);
 
-        // Redirect to login page after 3 seconds
+        // Redirect to login page after 1 second
         setTimeout(() => {
           navigate("/login", { replace: true });
-        }, 3000);
+        }, 1000);
       }
     };
 
