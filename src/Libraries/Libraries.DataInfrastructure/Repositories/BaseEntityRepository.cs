@@ -49,6 +49,7 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
 
     public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
+        Entities.Update(entity);
         if (saveChanges)
             await StoreChangesAsync(token);
 
