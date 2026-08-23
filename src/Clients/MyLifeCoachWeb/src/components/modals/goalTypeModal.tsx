@@ -6,7 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import type { GoalTypeResponse } from "../../models/goalTypes/responses/goalType";
+import type { GoalTypeResponse } from "../../models/goalTypes/responses/goalTypeReponse";
 import type { GoalTypeFormData } from "../../models/formData/goalTypeFormData";
 
 export interface GoalTypeModalProps {
