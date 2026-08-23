@@ -10,7 +10,6 @@ import { Box, CircularProgress } from "@mui/material";
 import NavBar from "./NavBar";
 import { useAuth } from "../hooks/useAuth";
 import { useState } from "react";
-import RootPage from "../pages/root/RootPage";
 
 export default function App() {
   const { isLoading } = useAuth();
@@ -52,10 +51,8 @@ export default function App() {
         <Typography variant="h6" sx={{ mt: 4, textAlign: "center" }}>
           Initialising app...
         </Typography>
-      ) : location.pathname === "/" ? (
-        <RootPage />
       ) : (
-        <Container sx={{ mt: 4 }}>
+        <Container maxWidth="xl" sx={{ mt: 12 }}>
           <Outlet />
         </Container>
       )}

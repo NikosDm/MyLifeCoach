@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { LoginButton, LogoutButton } from "../auth/index.ts";
 import { NavLink } from "react-router-dom";
+import SidebarMenuList from "./SidebarMenuList.tsx";
 
 const navStyle = {
   color: "inherit",
@@ -32,7 +33,8 @@ interface HeaderProps {
 
 export default function NavBar(props: HeaderProps) {
   const { darkMode, handleThemeChange } = props;
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, isActive, user } = useAuth();
+  const [openSidebar, setOpenSidebar] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -44,14 +46,27 @@ export default function NavBar(props: HeaderProps) {
     setAnchorEl(null);
   };
 
+  const onClickMenu = () => {
+    if (!isAuthenticated || !isActive) {
+      return;
+    }
+
+    setOpenSidebar(!openSidebar);
+  };
+
   return (
     <AppBar position="fixed">
+      <SidebarMenuList
+        open={openSidebar}
+        toggleDrawer={() => setOpenSidebar(false)}
+      />
       <Toolbar>
         <IconButton
           size="large"
           edge="start"
           color="inherit"
           aria-label="menu"
+          onClick={onClickMenu}
           sx={{ mr: 2 }}
         >
           <MenuIcon />
