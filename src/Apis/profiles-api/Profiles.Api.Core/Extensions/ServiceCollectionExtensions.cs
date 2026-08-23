@@ -2,6 +2,7 @@ using FluentValidation;
 
 using Libraries.Common.Abstractions.Commands;
 using Libraries.Common.Abstractions.Queries;
+
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Collections.Generic;
@@ -29,6 +30,9 @@ using Profiles.Api.Core.Features.ProfessionalProfiles.Handlers.Queries;
 using Profiles.Api.Core.Features.ProfessionalProfiles.Requests.Commands;
 using Profiles.Api.Core.Features.ProfessionalProfiles.Requests.Queries;
 using Profiles.Api.Core.Dtos.ProfessionalProfiles.Responses;
+using Profiles.Api.Core.Features.Users.Requests.Commands;
+using Profiles.Api.Core.Dtos.Users.Responses;
+using Profiles.Api.Core.Features.Users.Handlers.Commands;
 
 namespace Profiles.Api.Core.Extensions;
 
@@ -41,7 +45,7 @@ public static class ServiceCollectionExtensions
         services
             .AddScoped<ICommandHandler<CreatePersonalProfileCommand, PersonalProfileResponse>, CreatePersonalProfileCommandHandler>()
             .AddScoped<ICommandHandler<UpdatePersonalProfileCommand, PersonalProfileResponse>, UpdatePersonalProfileCommandHandler>()
-            .AddScoped<IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>>, GetPersonalProfilesQueryHandler>()
+            .AddScoped<IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileListItemResponse>>, GetPersonalProfilesQueryHandler>()
             .AddScoped<IQueryHandler<GetPersonalProfileByUserIdQuery, PersonalProfileResponse>, GetPersonalProfileByUserIdQueryHandler>()
             .AddScoped<IQueryHandler<GetPersonalProfileByIdQuery, PersonalProfileResponse>, GetPersonalProfileByIdQueryHandler>();
 
@@ -62,6 +66,9 @@ public static class ServiceCollectionExtensions
             .AddScoped<ICommandHandler<UpdateProfessionalProfileCommand, ProfessionalProfileResponse>, UpdateProfessionalProfileCommandHandler>()
             .AddScoped<IQueryHandler<GetProfessionalProfileByUserIdQuery, ProfessionalProfileResponse>, GetProfessionalProfileByUserIdQueryHandler>()
             .AddScoped<IQueryHandler<GetProfessionalProfileByIdQuery, ProfessionalProfileResponse>, GetProfessionalProfileByIdQueryHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ChangeUserStatusRequestCommand, UserResponse>, ChangeUserStatusRequestCommandHandler>();
 
         return services;
     }
