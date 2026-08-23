@@ -7,6 +7,7 @@ using Profiles.Api.Core.Abstractions;
 using Profiles.Api.DataPersistence.Context;
 using Profiles.Api.DataPersistence.Factories;
 using Profiles.Api.DataPersistence.Filters;
+using Profiles.Api.DataPersistence.Publishers;
 using Profiles.Api.DataPersistence.Repositories;
 using Profiles.Api.DataPersistence.Subscribers;
 
@@ -23,11 +24,13 @@ public static class ServiceCollectionExtensions
         return services
             .AddRepositories()
             .AddFactories()
-            .AddSubscribers();
+            .AddSubscribers()
+            .AddPublishers();
     }
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
         => services
+            .AddScoped<IUserRepository, UserRepository>()
             .AddScoped<IProfileRepository, PersonalProfileRepository>()
             .AddScoped<IProfileRepository, FinancialProfileRepository>()
             .AddScoped<IProfileRepository, ProfessionalProfileRepository>()
@@ -40,4 +43,8 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddSubscribers(this IServiceCollection services)
         => services
             .AddScoped<UserCreatedSubscriber>();
+
+    private static IServiceCollection AddPublishers(this IServiceCollection services)
+        => services
+            .AddScoped<IUserStatusPublisher, UserStatusPublisher>();
 }
