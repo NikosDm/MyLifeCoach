@@ -18,4 +18,14 @@ public sealed class PersonalProfile : ProfileBase
     {
         Type = ProfileType.PERSONAL;
     }
+
+    public void InitializeUser(string role, bool isActive)
+    {
+        User = new User
+        {
+            Role = role,
+            IsActive = isActive
+        };
+        User.SetEntityId(UserId);
+    }
 }
