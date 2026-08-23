@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URLS } from "../auth/config";
 import { userManager } from "../auth/userManager";
-import type { GoalTypeResponse } from "../models/goalTypes/responses/goalType";
+import type { GoalTypeResponse } from "../models/goalTypes/responses/goalTypeReponse";
 import type {
   CreateGoalTypeRequest,
   UpdateGoalTypeRequest,
