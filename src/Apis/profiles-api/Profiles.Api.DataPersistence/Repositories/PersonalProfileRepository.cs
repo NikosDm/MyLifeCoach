@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,5 +25,13 @@ internal sealed class PersonalProfileRepository(ProfileDbContext dbContext)
         return await Entities
             .Include(u => u.User)
             .AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId, token);
+    }
+
+    public override async Task<IReadOnlyList<PersonalProfile>> GetAsync(CancellationToken token = default)
+    {
+        return await Entities
+            .Include(u => u.User)
+            .AsNoTracking()
+            .ToListAsync(token);
     }
 }
