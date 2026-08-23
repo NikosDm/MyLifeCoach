@@ -29,7 +29,7 @@ public static class PersonalProfileEndpoints
             .WithTags("PersonalProfiles");
 
         group.MapGet("/", async (
-            IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileResponse>> handler,
+            IQueryHandler<GetPersonalProfilesQuery, IReadOnlyList<PersonalProfileListItemResponse>> handler,
             CancellationToken token = default) =>
         {
             var result = await handler.HandleAsync(new GetPersonalProfilesQuery(), token);
@@ -39,7 +39,7 @@ public static class PersonalProfileEndpoints
         .WithName("GetPersonalProfiles")
         .WithSummary("Returns a list of all Personal Profiles")
         .WithDescription("Returns a list of all Personal Profiles")
-        .Produces<IReadOnlyList<PersonalProfileResponse>>(StatusCodes.Status200OK)
+        .Produces<IReadOnlyList<PersonalProfileListItemResponse>>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status500InternalServerError);
 
         group.MapGet("/user", async (

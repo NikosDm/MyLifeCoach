@@ -6,4 +6,5 @@ public static class RouteConstants
     public const string ProfessionalProfileApiPrefix = "/api/professional-profiles";
     public const string FinancialProfileApiPrefix = "/api/financial-profiles";
     public const string FitnessProfileApiPrefix = "/api/fitness-profiles";
+    public const string UserApiPrefix = "/api/users";
 }

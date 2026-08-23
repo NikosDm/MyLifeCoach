@@ -31,5 +31,6 @@ public static class ApplicationBuilderExtensions
         app.MapFinancialProfileEndpoints();
         app.MapFitnessProfileEndpoints();
         app.MapProfessionalProfileEndpoints();
+        app.MapUserEndpoints();
     }
 }
