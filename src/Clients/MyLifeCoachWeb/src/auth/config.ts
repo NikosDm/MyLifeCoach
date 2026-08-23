@@ -28,7 +28,7 @@ export const oidcConfig: UserManagerSettings = {
 };
 
 export const API_URLS = {
-  GOALS_API: import.meta.env.VITE_GOALS_API_URL || "http://localhost:3000",
+  GOALS_API: import.meta.env.VITE_GOALS_API_URL || "http://localhost:3000/api",
   PROFILES_API:
-    import.meta.env.VITE_PROFILES_API_URL || "http://localhost:3001",
+    import.meta.env.VITE_PROFILES_API_URL || "http://localhost:3020/api",
 };
