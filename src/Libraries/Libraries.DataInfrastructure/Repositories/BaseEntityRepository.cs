@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using Libraries.Common.Entities;
+using Libraries.Common.Models;
 
 namespace Libraries.DataInfrastructure.Repositories;
 
@@ -17,6 +18,40 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
 {
     protected readonly DbSet<TEntity> Entities = dbContext.Set<TEntity>();
     private readonly TContext _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+
+    /* START - PAGINATION METHODS*/
+
+    public virtual async Task<PaginationResult<TResult>> GetPaginatedAsync<TResult>(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<TEntity, TResult>> selectOptions,
+        Expression<Func<TEntity, bool>> whereOptions = null,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+        CancellationToken token = default)
+    {
+        ArgumentNullException.ThrowIfNull(selectOptions, nameof(selectOptions));
+
+        var query = Entities.AsNoTracking();
+
+        if (whereOptions is not null)
+            query = query.Where(whereOptions);
+
+        var totalCount = await query.CountAsync(token);
+
+        var orderedQuery = orderBy is not null
+            ? orderBy(query)
+            : query.OrderByDescending(x => x.LastUpdatedAt);
+
+        var items = await orderedQuery
+            .Select(selectOptions)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(token);
+
+        return new PaginationResult<TResult>(items, totalCount, pageNumber, pageSize);
+    }
+
+    /* END - PAGINATION METHODS*/
 
     public virtual async Task<TEntity> CreateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
     {
@@ -37,14 +72,13 @@ public abstract class BaseEntityRepository<TEntity, TContext>(TContext dbContext
         return await Entities.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id, token);
     }
 
-    public virtual async Task<IReadOnlyList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> options = null, CancellationToken token = default)
+    public virtual async Task<IReadOnlyList<TEntity>> SearchAsync(Expression<Func<TEntity, bool>> whereOptions = null, CancellationToken token = default)
     {
         var query = Entities.AsNoTracking();
 
-        if (options is null)
-            return await query.ToListAsync(token);
-
-        return await query.Where(options).ToListAsync(token);
+        return whereOptions is null
+            ? await query.ToListAsync(token)
+            : await query.Where(whereOptions).ToListAsync(token);
     }
 
     public virtual async Task<TEntity> UpdateAsync(TEntity entity, bool saveChanges = true, CancellationToken token = default)
