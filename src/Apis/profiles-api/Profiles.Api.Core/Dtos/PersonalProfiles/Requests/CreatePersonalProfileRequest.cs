@@ -18,4 +18,4 @@ public sealed record CreatePersonalProfileRequest(
     bool InitialiseUser,
     string Role,
     bool IsActive)
-    : BasePersonalProfileRequest(FullName, DateOfBirth, City, Country, Email, PhoneNumber);
+    : BasePersonalProfileRequest(UserId, FullName, DateOfBirth, City, Country, Email, PhoneNumber);
