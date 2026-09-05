@@ -98,6 +98,8 @@ public class MessageDispatcher(ICapPublisher capPublisher, IUserContext userCont
 
             if (!string.IsNullOrWhiteSpace(_userContext.Role))
                 headers[MessageHeaderConstants.Role] = _userContext.Role;
+
+            headers[MessageHeaderConstants.IsActive] = _userContext.IsActive.ToString();
         }
 
         if (additionalHeaders is not null)

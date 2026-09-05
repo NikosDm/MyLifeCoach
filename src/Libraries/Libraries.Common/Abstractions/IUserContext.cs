@@ -8,4 +8,5 @@ public interface IUserContext
     Guid? UserId { get; }
     string Username { get; }
     public string Role { get; }
+    public bool IsActive { get; }
 }

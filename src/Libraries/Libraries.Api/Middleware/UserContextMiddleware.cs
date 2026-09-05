@@ -25,12 +25,14 @@ public sealed class UserContextMiddleware(IUserContextAccessor accessor) : IMidd
                 IsAuthenticated: true,
                 UserId: userId,
                 Username: p.FindFirstValue(SecurityConstants.USERNAME_CLAIM),
-                Role: p.FindFirstValue(SecurityConstants.ROLE_CLAIM)
+                Role: p.FindFirstValue(SecurityConstants.ROLE_CLAIM),
+                IsActive: bool.TryParse(p.FindFirstValue(SecurityConstants.IS_ACTIVE_CLAIM), out var isActive)
+                    && isActive
             );
         }
         else
         {
-            accessor.Current = new UserContextData(false, null, null, null);
+            accessor.Current = new UserContextData(false, null, null, null, false);
         }
 
         try

@@ -24,7 +24,8 @@ public class IdentitySubscribeFilter(IUserContextAccessor accessor) : SubscribeF
             IsAuthenticated: userId is not null,
             UserId: userId,
             Username: headers.TryGetValue(MessageHeaderConstants.Username, out var username) ? username : null,
-            Role: headers.TryGetValue(MessageHeaderConstants.Role, out var role) ? role : null
+            Role: headers.TryGetValue(MessageHeaderConstants.Role, out var role) ? role : null,
+            IsActive: headers.TryGetValue(MessageHeaderConstants.IsActive, out var isActiveHeader) && bool.TryParse(isActiveHeader, out var isActive) && isActive
         );
 
         return base.OnSubscribeExecutingAsync(context);

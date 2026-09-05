@@ -79,7 +79,8 @@ internal sealed class AccountService(
             {
                 { MessageHeaderConstants.UserId, user.Id.ToString() },
                 { MessageHeaderConstants.Username, user.UserName },
-                { MessageHeaderConstants.Role, request.Role }
+                { MessageHeaderConstants.Role, request.Role },
+                { MessageHeaderConstants.IsActive, user.IsActive.ToString() }
             };
 
             await _messageDispatcher.DispatchAsync(user.ToUserCreatedMessage(request.FullName), headers);

@@ -13,5 +13,6 @@ public sealed class UserContext(IUserContextAccessor accessor) : IUserContext
     public Guid? UserId => _accessor.Current?.UserId;
     public string Username => _accessor.Current?.Username ?? string.Empty;
     public string Role => _accessor.Current?.Role ?? string.Empty;
+    public bool IsActive => _accessor.Current?.IsActive ?? false;
 }
 
