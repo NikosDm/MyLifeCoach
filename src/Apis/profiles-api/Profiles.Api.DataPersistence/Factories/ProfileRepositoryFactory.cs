@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Profiles.Api.Core.Abstractions;
+
+using Profiles.Api.Core.Abstractions.Repositories;
 using Profiles.Api.Domain.Abstractions;
 using Profiles.Api.Domain.Enums;
 

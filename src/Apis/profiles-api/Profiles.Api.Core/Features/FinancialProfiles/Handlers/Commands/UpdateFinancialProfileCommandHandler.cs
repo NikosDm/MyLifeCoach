@@ -8,7 +8,7 @@ using Libraries.Common.Handlers;
 
 using Microsoft.Extensions.Logging;
 
-using Profiles.Api.Core.Abstractions;
+using Profiles.Api.Core.Abstractions.Repositories;
 using Profiles.Api.Core.Dtos.FinancialProfiles.Requests;
 using Profiles.Api.Core.Dtos.FinancialProfiles.Responses;
 using Profiles.Api.Core.Extensions;

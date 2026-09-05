@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using Profiles.Api.Core.Dtos.Users.Responses;
 
-namespace Profiles.Api.Core.Abstractions;
+namespace Profiles.Api.Core.Abstractions.Publishers;
 
 public interface IUserStatusPublisher
 {

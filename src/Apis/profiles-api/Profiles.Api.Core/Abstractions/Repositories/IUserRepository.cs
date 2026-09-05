@@ -9,7 +9,7 @@ using Libraries.Common.Models;
 
 using Profiles.Api.Domain.Models;
 
-namespace Profiles.Api.Core.Abstractions;
+namespace Profiles.Api.Core.Abstractions.Repositories;
 
 public interface IUserRepository
 {

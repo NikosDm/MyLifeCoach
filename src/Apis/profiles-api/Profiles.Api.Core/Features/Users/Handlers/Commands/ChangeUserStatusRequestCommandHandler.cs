@@ -7,7 +7,7 @@ using Libraries.Common.Handlers;
 
 using Microsoft.Extensions.Logging;
 
-using Profiles.Api.Core.Abstractions;
+using Profiles.Api.Core.Abstractions.Publishers;
 using Profiles.Api.Core.Dtos.Users.Responses;
 using Profiles.Api.Core.Features.Users.Requests.Commands;
 

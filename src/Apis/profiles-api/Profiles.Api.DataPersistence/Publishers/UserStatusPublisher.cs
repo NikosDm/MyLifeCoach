@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Libraries.Common.Constants;
 using Libraries.DataInfrastructure.Abstractions;
 
-using Profiles.Api.Core.Abstractions;
+using Profiles.Api.Core.Abstractions.Publishers;
 using Profiles.Api.DataPersistence.Context;
 using Profiles.Api.DataPersistence.Extensions;
 using Profiles.Api.Domain.Models;

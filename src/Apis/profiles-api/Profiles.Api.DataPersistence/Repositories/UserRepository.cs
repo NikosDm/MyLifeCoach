@@ -1,6 +1,6 @@
 using Libraries.DataInfrastructure.Repositories;
 
-using Profiles.Api.Core.Abstractions;
+using Profiles.Api.Core.Abstractions.Repositories;
 using Profiles.Api.DataPersistence.Context;
 using Profiles.Api.Domain.Models;
 

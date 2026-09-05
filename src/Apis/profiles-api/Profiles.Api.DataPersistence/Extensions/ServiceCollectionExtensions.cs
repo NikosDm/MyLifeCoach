@@ -3,7 +3,8 @@ using Libraries.DataInfrastructure.Extensions;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using Profiles.Api.Core.Abstractions;
+using Profiles.Api.Core.Abstractions.Repositories;
+using Profiles.Api.Core.Abstractions.Publishers;
 using Profiles.Api.DataPersistence.Context;
 using Profiles.Api.DataPersistence.Factories;
 using Profiles.Api.DataPersistence.Filters;

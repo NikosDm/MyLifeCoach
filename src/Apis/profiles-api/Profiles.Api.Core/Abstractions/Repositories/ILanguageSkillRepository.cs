@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Profiles.Api.Domain.Models.RatedItems;
 
-namespace Profiles.Api.Core.Abstractions;
+namespace Profiles.Api.Core.Abstractions.Repositories;
 
 public interface ILanguageSkillRepository
 {

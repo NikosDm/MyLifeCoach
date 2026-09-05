@@ -1,7 +1,7 @@
 using Profiles.Api.Domain.Abstractions;
 using Profiles.Api.Domain.Enums;
 
-namespace Profiles.Api.Core.Abstractions;
+namespace Profiles.Api.Core.Abstractions.Repositories;
 
 public interface IProfileRepositoryFactory
 {
