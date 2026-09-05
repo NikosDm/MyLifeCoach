@@ -13,14 +13,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Libraries.Api.Exceptions;
 
-public sealed class ApiExceptionHandler : IExceptionHandler
+public sealed class ApiExceptionHandler(ILogger<ApiExceptionHandler> logger) : IExceptionHandler
 {
-    private readonly ILogger<ApiExceptionHandler> _logger;
-
-    public ApiExceptionHandler(ILogger<ApiExceptionHandler> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<ApiExceptionHandler> _logger = logger
+        ?? throw new ArgumentNullException(nameof(logger));
 
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
