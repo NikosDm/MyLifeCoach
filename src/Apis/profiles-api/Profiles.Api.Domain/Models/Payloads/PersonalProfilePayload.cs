@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Profiles.Api.Domain.Models.Payloads;
 
@@ -11,4 +12,7 @@ public class PersonalProfilePayload
     public string Country { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
+    public string Bio { get; set; }
+    public string ProfilePictureUrl { get; set; }
+    public IEnumerable<string> Hobbies { get; set; }
 }

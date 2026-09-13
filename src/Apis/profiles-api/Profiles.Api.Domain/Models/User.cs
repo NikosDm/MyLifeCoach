@@ -6,6 +6,7 @@ namespace Profiles.Api.Domain.Models;
 
 public sealed class User : BaseEntity
 {
+    public string Email { get; set; }
     public string Role { get; set; }
     public bool IsActive { get; set; }
     public DateTimeOffset? DeactivationDate { get; set; }
