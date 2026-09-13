@@ -46,6 +46,8 @@ internal sealed class AccountService(
 
     public async Task<RegisterResponse> CreateAsync(CreateUserRequest request)
     {
+        var result = new RegisterResponse(null, IdentityResult.Failed());
+
         var user = new ApplicationUser
         {
             UserName = request.Username,
@@ -55,43 +57,49 @@ internal sealed class AccountService(
             IsActive = request.IsActive
         };
 
+        var createResult = await _userManager.CreateAsync(user, request.Password);
+
+        if (!createResult.Succeeded)
+        {
+            return new RegisterResponse(null, createResult);
+        }
+
+        await _userManager.AddToRoleAsync(user, request.Role);
+        await _userManager.AddClaimsAsync(user,
+        [
+            new Claim(JwtClaimTypes.Name, request.FullName),
+            new Claim(JwtClaimTypes.Role, request.Role),
+            new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString())
+        ]);
+
+        return result with { User = new UserDto(user.Id, user.UserName, user.Email, request.FullName), Result = createResult };
+    }
+
+    public async Task<RegisterResponse> CreateAndDispatchAsync(CreateUserRequest request)
+    {
         await using var transaction = await _messageDispatcher.BeginTransactionAsync(_dbContext.Database);
-        var result = new RegisterResponse(null, IdentityResult.Failed());
 
         try
         {
-            var createResult = await _userManager.CreateAsync(user, request.Password);
-
-            if (!createResult.Succeeded)
-            {
-                return new RegisterResponse(null, createResult);
-            }
-
-            await _userManager.AddToRoleAsync(user, request.Role);
-            await _userManager.AddClaimsAsync(user,
-            [
-                new Claim(JwtClaimTypes.Name, request.FullName),
-                new Claim(JwtClaimTypes.Role, request.Role),
-                new Claim(SecurityConstants.IS_ACTIVE_CLAIM, user.IsActive.ToString())
-            ]);
+            var response = await CreateAsync(request);
 
             var headers = new Dictionary<string, string>
             {
-                { MessageHeaderConstants.UserId, user.Id.ToString() },
-                { MessageHeaderConstants.Username, user.UserName },
+                { MessageHeaderConstants.UserId, response.User.ToString() },
+                { MessageHeaderConstants.Username, response.User.Username },
                 { MessageHeaderConstants.Role, request.Role },
-                { MessageHeaderConstants.IsActive, user.IsActive.ToString() }
+                { MessageHeaderConstants.IsActive, request.ToString() }
             };
 
-            await _messageDispatcher.DispatchAsync(user.ToUserCreatedMessage(request.FullName), headers);
+            await _messageDispatcher.DispatchAsync(response.ToUserCreatedMessage(request.FullName), headers);
             await transaction.CommitAsync();
 
-            return result with { User = new UserDto(user.Id, user.UserName, user.Email, request.FullName), Result = createResult };
+            return response;
         }
         catch
         {
             await transaction.RollbackAsync();
-            return result with { Result = IdentityResult.Failed() };
+            return new RegisterResponse(null, IdentityResult.Failed());
         }
     }
 

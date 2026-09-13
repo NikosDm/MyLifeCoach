@@ -10,6 +10,7 @@ namespace IdentityServer.Core.Abstractions;
 
 public interface IAccountService
 {
+    Task<RegisterResponse> CreateAndDispatchAsync(CreateUserRequest request);
     Task<RegisterResponse> CreateAsync(CreateUserRequest request);
     Task<LoginResponse> LoginAsync(LoginUserRequest request);
     Task<IdentityResult> ChangeUserStatusAsync(Guid userId, bool isActive, DateTimeOffset? deactivationDate = null);
