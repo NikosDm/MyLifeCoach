@@ -4,15 +4,12 @@ using Libraries.Common.Abstractions;
 
 namespace Libraries.Common.Messages;
 
-public class UserCreatedMessage : IMessage
+public class UserRegisteredMessage : IMessage
 {
     public Guid Id { get; set; }
     public string Username { get; set; }
     public string FullName { get; set; }
     public string Email { get; set; }
-    public string Password { get; set; }
-    public string Role { get; set; }
-    public bool IsActive { get; set; }
     public string EntityType => "User";
-    public string Action => "Created";
+    public string Action => "Registered";
 }
