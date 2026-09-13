@@ -19,7 +19,6 @@ public class UserActivationChangedSubscriber(
 {
     private readonly ILogger<UserActivationChangedSubscriber> _logger = logger
         ?? throw new ArgumentNullException(nameof(logger));
-
     private readonly IAccountService _accountService = accountService
         ?? throw new ArgumentNullException(nameof(accountService));
 

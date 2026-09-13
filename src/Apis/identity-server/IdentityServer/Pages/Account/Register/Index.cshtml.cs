@@ -44,8 +44,14 @@ public class Index(IAccountService accountService) : PageModel
         if (ModelState.IsValid)
         {
             Loading = true;
-            var request = new CreateUserRequest(Input.Email, Input.Password, Input.Username, Input.FullName);
-            var result = await _accountService.CreateAsync(request);
+            var request = new CreateUserRequest
+            {
+                Email = Input.Email,
+                Password = Input.Password,
+                Username = Input.Username,
+                FullName = Input.FullName
+            };
+            var result = await _accountService.CreateAndDispatchAsync(request);
 
             if (result.Result.Succeeded)
             {
